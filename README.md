@@ -1,10 +1,10 @@
 <h1>Proyecto TIS - Agendamiendo de ambientes de la FCyT de la UMSS</h1> 
-<h3>Integrantes</h3> 
--Marin Ovando Sebastián Gustavo
--Ledezma Choque Julio Rodrigo
--Arnez Torrico Adalid
--Copez Orellana Adrian Leonardo
--Cespedes Molina Alexander Mauricio
--Herrera Vargas Katrin
--Montali Argote Gustavo Alan
--Ureña Vidal Kevin Raul
+<h3>Integrantes</h3>  <br/>
+-Marin Ovando Sebastián Gustavo<br/>
+-Ledezma Choque Julio Rodrigo<br/>
+-Arnez Torrico Adalid<br/>
+-Copez Orellana Adrian Leonardo<br/>
+-Cespedes Molina Alexander Mauricio<br/>
+-Herrera Vargas Katrin<br/>
+-Montali Argote Gustavo Alan<br/>
+-Ureña Vidal Kevin Raul<br/>
