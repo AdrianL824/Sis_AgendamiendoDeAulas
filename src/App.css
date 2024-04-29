@@ -1,0 +1,17 @@
+.swal2-container {
+  z-index: 9999; /* Ajusta este valor según sea necesario */
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+.kau {
+  font-family: "Kaushan Script", cursive;
+}
+.nanum-myeongjo-bold {
+  font-family: "Nanum Myeongjo", sans-serif;
+  font-weight: 700;
+}
+.kaushan-script {
+  font-family: "Kaushan Script", cursive;
+}
