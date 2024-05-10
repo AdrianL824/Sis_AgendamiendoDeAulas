@@ -3,9 +3,9 @@ import Fullcalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import "./Calendar.css";
 
 function Calendar() {
-    
   return (
     <div>
       <Fullcalendar
@@ -18,10 +18,9 @@ function Calendar() {
         }}
         height={"90vh"}
         events={[
-            { title: 'Examen Redes', date: '2024-04-15' },
-            { title: 'event 2', date: '2024-04-05' }
-          ]}
-        
+          { title: "Examen Redes", date: "2024-04-15" },
+          { title: "event 2", date: "2024-04-05" },
+        ]}
       />
     </div>
   );
