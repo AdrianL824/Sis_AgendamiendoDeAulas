@@ -10,7 +10,8 @@ import Drawer from "../../../hooks/Drawer/Drawer";
 import { getApi } from "../../../api/api";
 
 import Form_Reserva from "../../../hooks/Forms/Form_Reserva";
- 
+import Aulas from "../../../hooks/Components/aulas";
+
 const Page_Reserva = () => {
   const name = "Reserva";
 
@@ -40,7 +41,9 @@ const Page_Reserva = () => {
   };
   async function getProduct() {
     try {
-      const productsData = await getApi('http://localhost:8080/api/space/spaces');
+      const productsData = await getApi(
+        "http://localhost:8080/api/space/spaces"
+      );
       setSpace(productsData.space);
       console.log(productsData);
     } catch (error) {
@@ -49,7 +52,7 @@ const Page_Reserva = () => {
   }
   async function getReserva() {
     try {
-      const booksData = await getApi('http://localhost:8080/api/book/books');
+      const booksData = await getApi("http://localhost:8080/api/book/books");
       setBook(booksData.book);
       console.log(booksData);
     } catch (error) {
@@ -71,21 +74,20 @@ const Page_Reserva = () => {
                 {name}
               </Typography>
 
-              <ButtonProducts
+              {/* <ButtonProducts
                 handleChange={handleChange}
                 selectedProduct={selectedProduct}
                 openDrawer={openDrawer}
                 editFalse={editFalse}
-              />
+              /> */}
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} md={12} lg={12}>
           <Grid container style={containerChartStyles}>
             <Grid item xs={12}>
-              <Calendar 
-                getReserva={getReserva}
-              />
+              {/* <Calendar getReserva={getReserva} /> */}
+              <Aulas getReserva={getReserva} />
             </Grid>
           </Grid>
         </Grid>

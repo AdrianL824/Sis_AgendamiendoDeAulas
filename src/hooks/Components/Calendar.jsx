@@ -5,8 +5,9 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { getApi } from "../../api/api";
 import RegisterModal from "../Modal/Modal.jsx";
+import "./Calendar.css";
 
-function Calendar() {
+function Calendar({ title, block, capacity, webaddress }) {
   const [events, setEvents] = useState([]);
   const [open, setOpen] = useState(false);
   const [target, setTarget] = useState(null);
@@ -17,32 +18,62 @@ function Calendar() {
 
   async function getReserva() {
     try {
-      const booksData = await getApi("http://localhost:8080/api/book/books");
-      const mappedEvents = booksData.book.map((event) => ({
-        title: event.name,
-        description: `${event.name_teacher} - ${event.schedule}`,
-        start: event.date,
-        end: event.endDate, // Agregamos la fecha de finalización si está disponible
-      }));
+      const response = await getApi(
+        `http://localhost:8080/api/book/single-book/${title}`
+      );
+
+      const scheduleRanges = {
+        A: { start: "06:45:00", end: "08:15:00" },
+        B: { start: "08:15:00", end: "09:45:00" },
+        C: { start: "09:45:00", end: "11:15:00" },
+        D: { start: "11:15:00", end: "12:45:00" },
+        E: { start: "12:45:00", end: "14:15:00" },
+        F: { start: "14:15:00", end: "15:45:00" },
+        G: { start: "15:45:00", end: "17:15:00" },
+        H: { start: "17:15:00", end: "18:45:00" },
+        I: { start: "18:45:00", end: "20:15:00" },
+        J: { start: "20:15:00", end: "21:45:00" },
+      };
+
+      const mappedEvents = response.book.map((event) => {
+        const { date, schedule } = event;
+        const { start: startTime, end: endTime } = scheduleRanges[schedule];
+        const start = `${date.substring(0, 10)}T${startTime}`;
+        const end = `${date.substring(0, 10)}T${endTime}`;
+
+        return {
+          title: event.name_teacher,
+          start,
+          end,
+          resourceId: event.name,
+        };
+      });
+
       setEvents(mappedEvents);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error fetching reservations:", error);
     }
   }
 
   const handleClickOpen = (selectedInfo) => {
+    // console.log(selectedInfo);
     setOpen(true);
     setTarget({
-      startDate: selectedInfo.startStr,
-      endDate: selectedInfo.endStr,
-      startTime: selectedInfo.startStr.substring(11, 16),
-      endTime: selectedInfo.endStr.substring(11, 16),
+      startDate: selectedInfo.startStr.substring(0, 10),
+      startTime: selectedInfo.startStr.substring(11, 19),
+      endTime: selectedInfo.endStr.substring(11, 19),
+      slug: title,
+      block: block,
+      capacity: capacity,
+      webaddress: webaddress,
     });
   };
 
   return (
-    <div>
+    <>
+      <h3>{title}</h3>
       <FullCalendar
+        timeZone="Z"
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView={"timeGridWeek"}
         headerToolbar={{
@@ -73,7 +104,7 @@ function Calendar() {
         select={handleClickOpen}
       />
       {open && <RegisterModal setOpen={setOpen} target={target} />}
-    </div>
+    </>
   );
 }
 

@@ -13,6 +13,7 @@ import Cookies from "js-cookie";
 import Create_User from "../pages/Admin/User/Page";
 import Page_Ambiente from "../pages/Admin/Ambiente/Page";
 import Page_Reserva from "../pages/Admin/Reserva/Page";
+import Aulas from "../hooks/Components/aulas";
 export const AppRouter = () => {
   const authToken = Cookies.get("token");
   return (
@@ -24,6 +25,7 @@ export const AppRouter = () => {
           element={authToken ? <Navigate to="/admin" /> : <Login />}
         />
         <Route path="/admin/ambiente" element={<Page_Ambiente />} />
+        <Route path="/admin/aulas" element={<Aulas />} />
         <Route path="/admin" element={<HomeAdmin />} />
         <Route path="/admin/user" element={<Create_User />} />
         <Route path="/admin/reserva" element={<Page_Reserva />} />
