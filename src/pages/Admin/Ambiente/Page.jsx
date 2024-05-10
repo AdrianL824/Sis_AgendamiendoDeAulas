@@ -9,7 +9,7 @@ import Drawer from "../../../hooks/Drawer/Drawer";
 import { getApi } from "../../../api/api";
 
 import Form_Ambiente from "../../../hooks/Forms/Form_Ambiente";
- 
+
 const Page_Ambiente = () => {
   const name = "Ambiente";
 
@@ -40,7 +40,9 @@ const Page_Ambiente = () => {
   };
   async function getProduct() {
     try {
-      const productsData = await getApi('http://localhost:8080/api/space/spaces');
+      const productsData = await getApi(
+        "http://localhost:8080/api/space/spaces"
+      );
       setSpace(productsData.space);
       console.log(productsData);
     } catch (error) {
@@ -65,12 +67,12 @@ const Page_Ambiente = () => {
                 {name}
               </Typography>
 
-              <ButtonProducts
+              {/* <ButtonProducts
                 handleChange={handleChange}
                 selectedProduct={selectedProduct}
                 openDrawer={openDrawer}
                 editFalse={editFalse}
-              />
+              /> */}
             </Grid>
           </Grid>
         </Grid>

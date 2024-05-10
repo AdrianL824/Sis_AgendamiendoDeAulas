@@ -113,7 +113,7 @@ const RegisterModal = ({ setOpen, target }) => {
       capacity: capacity,
       block: block,
       wbaddress: webaddress,
-      name_teacher: "Docente",
+      name_teacher: "Admin",
       date: new Date(date).toISOString(),
       day: dayOfWeek,
       schedule: newBlockTime,
