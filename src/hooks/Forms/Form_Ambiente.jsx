@@ -1,20 +1,17 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import {
-  FormControl,
-  TextField,
-  CssBaseline,
-} from "@mui/material";
+import { FormControl, TextField, CssBaseline } from "@mui/material";
 
 import { postAmbiente } from "../../api/api";
 
 import { Box, Button } from "@mui/material";
 
-
-const Form_Ambiente = ({ onClose, edit }) => {
+const Form_Ambiente = ({ onClose, edit, getProduct }) => {
   const [formData, setFormData] = useState({
     name: "",
     capacity: "",
+    minCapacity: "",
+    maxCapacity: "",
     block: "",
     wbaddress: "",
   });
@@ -29,25 +26,28 @@ const Form_Ambiente = ({ onClose, edit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const dataToSend = {
         name: formData.name,
         capacity: formData.capacity,
+        minCapacity: formData.minCapacity,
+        maxCapacity: formData.maxCapacity,
         codsis: formData.codsis,
         block: formData.block,
         webaddress: formData.wbaddress,
       };
-  
+
       // Convert the dataToSend object to a JSON string
       //const jsonData = JSON.stringify(dataToSend);
-  
+
       // Send a POST request with JSON data
-      const response = await postAmbiente("http://localhost:8080/api/space/register",dataToSend 
+      const response = await postAmbiente(
+        "http://localhost:8080/api/space/register",
+        dataToSend
         //method: "POST",
-        
       );
-  
+
       // Check the response status
       if (response.status === 200) {
         // The request was successful
@@ -55,7 +55,7 @@ const Form_Ambiente = ({ onClose, edit }) => {
       } else {
         //console.error("Error en la solicitud a la API");
       }
-  
+      getProduct();
       onClose();
     } catch (error) {
       console.error("Error sending data to API:", error);
@@ -109,6 +109,30 @@ const Form_Ambiente = ({ onClose, edit }) => {
           <Box sx={{ mt: 0 }}>
             <TextField
               required
+              label="Capacidad minima"
+              variant="outlined"
+              fullWidth
+              name="minCapacity"
+              value={formData.minCapacity}
+              onChange={handleChange}
+              margin="dense"
+            />
+          </Box>
+          <Box sx={{ mt: 0 }}>
+            <TextField
+              required
+              label="Capacidad maxima"
+              variant="outlined"
+              fullWidth
+              name="maxCapacity"
+              value={formData.maxCapacity}
+              onChange={handleChange}
+              margin="dense"
+            />
+          </Box>
+          <Box sx={{ mt: 0 }}>
+            <TextField
+              required
               label="Bloque de ambiente"
               variant="outlined"
               fullWidth
@@ -130,9 +154,6 @@ const Form_Ambiente = ({ onClose, edit }) => {
               margin="dense"
             />
           </Box>
-          
-
-          
         </FormControl>
 
         <Box sx={{ mt: 2 }}>

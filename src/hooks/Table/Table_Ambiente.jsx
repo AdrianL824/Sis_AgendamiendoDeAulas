@@ -67,9 +67,11 @@ export default function Table_Ambiente({ space }) {
         >
           <thead>
             <tr>
-              <th style={{ width: 30 }}>#</th>
-              <th style={{ width: 200 }}>Nombre</th>
-              <th style={{ width: 150 }}>Capacidad</th>
+              <th style={{ width: 25 }}>#</th>
+              <th style={{ width: 150 }}>Nombre</th>
+              <th style={{ width: 100 }}>Capacidad</th>
+              <th style={{ width: 50 }}>Max</th>
+              <th style={{ width: 50 }}>Min</th>
               <th style={{ width: 150 }}>Bloque</th>
               <th style={{ width: 150 }}>Direccion</th>
 
@@ -85,6 +87,8 @@ export default function Table_Ambiente({ space }) {
                 <td>{index + 1}</td>
                 <td>{row.name}</td>
                 <td>{row.capacity}</td>
+                <td>{row.minCapacity}</td>
+                <td>{row.maxCapacity}</td>
                 <td>{row.block}</td>
                 <td>{row.webaddress}</td>
 

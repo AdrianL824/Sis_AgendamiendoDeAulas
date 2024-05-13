@@ -61,7 +61,6 @@ export default function Aulas() {
       console.error("Error fetching spaces:", error);
     }
   }
-  console.log(space);
 
   const resources = space.map((space) => ({
     id: space.name,
@@ -86,7 +85,7 @@ export default function Aulas() {
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
-        sx={{ borderRight: 1, borderColor: "divider" }}
+        sx={{ borderRight: 1, borderColor: "divider", paddingTop: 0 }}
       >
         {resources.map((item, index) => (
           <Tab label={`${item.title}`} key={index} {...a11yProps(index)} />
