@@ -67,12 +67,12 @@ const Page_Ambiente = () => {
                 {name}
               </Typography>
 
-              {/* <ButtonProducts
+              <ButtonProducts
                 handleChange={handleChange}
                 selectedProduct={selectedProduct}
                 openDrawer={openDrawer}
                 editFalse={editFalse}
-              /> */}
+              />
             </Grid>
           </Grid>
         </Grid>
