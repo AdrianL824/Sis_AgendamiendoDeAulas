@@ -39,9 +39,22 @@ const RegisterModal = ({ setOpen, target, getReserva }) => {
         capacity,
         webaddress,
       } = target;
-      const newDayOfWeek = new Date(startDate).toLocaleDateString("es-ES", {
-        weekday: "long",
-      });
+      const date = new Date(startDate);
+      const dayOfWeekIndex = date.getDay(); 
+
+      const adjustedDayOfWeekIndex = (dayOfWeekIndex + 8) % 7; //solucion BUG xd, aquí se está controlando los días :)
+
+      const dayOfWeekOptions = [
+        "Domingo",
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+      ];
+
+      const newDayOfWeek = dayOfWeekOptions[adjustedDayOfWeekIndex];
 
       setStartDate(startDate);
       setDayOfWeek(newDayOfWeek);
