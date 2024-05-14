@@ -94,6 +94,7 @@ function Calendar({ title, block, capacity, webaddress }) {
             </div>
           );
         }}
+        locale={"es"}
         slotDuration="01:30:00"
         slotLabelInterval="01:30"
         slotMinTime="06:45:00"
