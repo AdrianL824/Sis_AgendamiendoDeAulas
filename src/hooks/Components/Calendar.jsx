@@ -105,7 +105,13 @@ function Calendar({ title, block, capacity, webaddress }) {
         selectMirror={true}
         select={handleClickOpen}
       />
-      {open && <RegisterModal setOpen={setOpen} target={target} />}
+      {open && (
+        <RegisterModal
+          setOpen={setOpen}
+          target={target}
+          getReserva={getReserva}
+        />
+      )}
     </>
   );
 }

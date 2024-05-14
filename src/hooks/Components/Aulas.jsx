@@ -67,8 +67,21 @@ export default function Aulas() {
     title: space.slug,
     block: space.block,
     capacity: space.capacity,
+    minCapacity: space.minCapacity,
+    maxCapacity: space.maxCapacity,
     webaddress: space.webaddress,
   }));
+
+  const cantAlum = {
+    alumnos: 140,
+  };
+
+  const filteredResources = resources.filter((item) => {
+    const studentsInRange =
+      cantAlum.alumnos >= item.minCapacity &&
+      cantAlum.alumnos <= item.maxCapacity;
+    return studentsInRange;
+  });
 
   return (
     <Box
@@ -78,6 +91,7 @@ export default function Aulas() {
         display: "flex",
         height: 624,
       }}
+      // className={"calendarContainer"}
     >
       <Tabs
         orientation="vertical"
@@ -85,14 +99,14 @@ export default function Aulas() {
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
-        sx={{ borderRight: 1, borderColor: "divider", paddingTop: 0 }}
+        sx={{ borderRight: 1, borderColor: "divider", paddingTop: "0px" }}
       >
-        {resources.map((item, index) => (
+        {filteredResources.map((item, index) => (
           <Tab label={`${item.title}`} key={index} {...a11yProps(index)} />
         ))}
       </Tabs>
 
-      {resources.map((item, index) => (
+      {filteredResources.map((item, index) => (
         <TabPanel key={index} value={value} index={index}>
           <Calendar
             title={item.title}
