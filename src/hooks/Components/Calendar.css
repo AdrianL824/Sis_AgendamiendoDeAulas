@@ -3,7 +3,10 @@
 }
 
 .calendarContainer{
-    padding-top: 0;
+    padding-top: 0px;
+    display: flex;
+    align-items: top;
+    width: 100%;
 }
 
 .calendarTitle{

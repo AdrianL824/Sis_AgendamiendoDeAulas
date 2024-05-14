@@ -8,7 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import { postApi } from "../../api/api";
 
-const RegisterModal = ({ setOpen, target }) => {
+const RegisterModal = ({ setOpen, target, getReserva }) => {
   const [startDate, setStartDate] = useState("");
   const [dayOfWeek, setDayOfWeek] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -138,6 +138,7 @@ const RegisterModal = ({ setOpen, target }) => {
     } catch (error) {
       console.error("Error sending data to API:", error);
     }
+    getReserva();
     handleClose();
   };
 
