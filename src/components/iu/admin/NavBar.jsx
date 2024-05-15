@@ -11,6 +11,7 @@ import { CustomListItem } from "./items/CustomListItem";
 import DomainIcon from "@mui/icons-material/Domain";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 
 const NavBar = ({ open, mode }) => {
@@ -33,6 +34,7 @@ const NavBar = ({ open, mode }) => {
 
   const [subMenu1Open, setSubMenu1Open] = useState(false);
   const [subMenu2Open, setSubMenu2Open] = useState(false);
+  const [subMenu3Open, setSubMenu3Open] = useState(false);
 
   const handleSubMenu1Click = () => {
     setSubMenu1Open(!subMenu1Open);
@@ -40,6 +42,10 @@ const NavBar = ({ open, mode }) => {
 
   const handleSubMenu2Click = () => {
     setSubMenu2Open(!subMenu2Open);
+  };
+
+  const handleSubMenu3Click = () => {
+    setSubMenu3Open(!subMenu3Open);
   };
 
   const handleLinkClick = (event) => {
@@ -120,6 +126,23 @@ const NavBar = ({ open, mode }) => {
               to="/admin/ambiente"
               text="Ambiente"
               icon={<DomainIcon />}
+              onClick={handleLinkClick}
+            />
+          </List>
+        )}
+        <Divider />
+        <CustomListItem
+          //to="/Admin/"
+          text="Periodo"
+          icon={subMenu3Open ? <ExpandLessIcon /> : <ExpandMoreIcon />} // Cambia el icono según el estado del submenú
+          onClick={handleSubMenu3Click}
+        />
+        {subMenu3Open && (
+          <List>
+            <CustomListItem
+              to="/Admin/Periodo"
+              text="Administrar"
+              icon={<BorderColorIcon />}
               onClick={handleLinkClick}
             />
           </List>
