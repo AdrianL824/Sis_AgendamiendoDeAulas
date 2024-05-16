@@ -7,7 +7,7 @@ import ButtonProducts from "../../../hooks/utils/Button";
 
 import Drawer from "../../../hooks/Drawer/Drawer";
 import { getApi } from "../../../api/api";
-
+import Form_Rango from "../../../hooks/Forms/Form_Rango";
 const Page_Periodo = () => {
     const name = "Periodo Reserva";
 
@@ -86,6 +86,24 @@ const Page_Periodo = () => {
                     </Grid>
                 </Grid>
             </Grid>
+            <div>
+        <Drawer
+          isOpen={drawerOpen}
+          onClose={closeDrawer}
+          selectedProduct={selectedProduct}
+          edit={edit}
+          getProduct={getProduct}
+          name={name}
+          form={
+            <Form_Rango
+              onClose={closeDrawer}
+              selectedProduct={selectedProduct}
+              edit={edit}
+              getProduct={getProduct}
+            />
+          }
+        />
+      </div>
         </Admin>
     )
 }
