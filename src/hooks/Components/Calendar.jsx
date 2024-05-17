@@ -72,9 +72,6 @@ function Calendar({ title, block, capacity, webaddress }) {
 
   return (
     <>
-      {/* <div className="calendarTitle">
-        <h2>{title}</h2>
-      </div> */}
       <FullCalendar
         timeZone="Z"
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}

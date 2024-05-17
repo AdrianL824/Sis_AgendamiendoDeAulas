@@ -8,6 +8,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Select_Aulas from "./Select_Aulas";
+import { center } from "@cloudinary/url-gen/qualifiers/textAlignment";
 
 function TabPanel(props) {
   const { children, value, index } = props;
@@ -106,7 +107,12 @@ export default function Aulas() {
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
-        sx={{ borderRight: 1, borderColor: "divider", paddingTop: "0px" }}
+        sx={{
+          borderRight: 1,
+          borderColor: "divider",
+          paddingTop: "0px",
+          width: "18%",
+        }}
       >
         {filteredResources.map((item, index) => (
           <Tab label={`${item.title}`} key={index} {...a11yProps(index)} />
@@ -115,14 +121,21 @@ export default function Aulas() {
 
       {filteredResources.map((item, index) => (
         <TabPanel key={index} value={value} index={index}>
-          <Select_Aulas
-            namesMaterias={namesMaterias}
-            resources={resources}
-            materia={materia}
-            setMateria={setMateria}
-            cantClass={cantClass}
-            setCantClass={setCantClass}
-          />
+          <div
+            style={{
+              display: "flex",
+            }}
+          >
+            <Select_Aulas
+              namesMaterias={namesMaterias}
+              resources={resources}
+              materia={materia}
+              setMateria={setMateria}
+              cantClass={cantClass}
+              setCantClass={setCantClass}
+            />
+            <h2 style={{ paddingLeft: "25%" }}>{item.title}</h2>
+          </div>
           <Calendar
             title={item.title}
             block={item.block}
