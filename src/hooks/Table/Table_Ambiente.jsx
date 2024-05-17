@@ -70,8 +70,8 @@ export default function Table_Ambiente({ space }) {
               <th style={{ width: 25 }}>#</th>
               <th style={{ width: 150 }}>Nombre</th>
               <th style={{ width: 100 }}>Capacidad</th>
-              <th style={{ width: 50 }}>Max</th>
               <th style={{ width: 50 }}>Min</th>
+              <th style={{ width: 50 }}>Max</th>
               <th style={{ width: 150 }}>Bloque</th>
               <th style={{ width: 150 }}>Direccion</th>
 
