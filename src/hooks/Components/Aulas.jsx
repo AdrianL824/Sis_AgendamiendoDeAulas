@@ -7,6 +7,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Select_Aulas from "./Select_Aulas";
 
 function TabPanel(props) {
   const { children, value, index } = props;
@@ -44,7 +45,18 @@ function a11yProps(index) {
 export default function Aulas() {
   const [value, setValue] = React.useState(0);
   const [space, setSpaces] = useState([]);
-
+  const [cantClass, setCantClass] = useState([100]);
+  const [materia, setMateria] = useState("");
+  const namesMaterias = [
+    { name: "Calculo 1", cantAlum: 100 },
+    { name: "Calculo 2", cantAlum: 150 },
+    { name: "TIS", cantAlum: 30 },
+    { name: "IS", cantAlum: 50 },
+    { name: "Algebra 2", cantAlum: 160 },
+    { name: "Calculo 3", cantAlum: 180 },
+    { name: "Ecuas", cantAlum: 180 },
+    { name: "Algebra", cantAlum: 200 },
+  ];
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -72,14 +84,9 @@ export default function Aulas() {
     webaddress: space.webaddress,
   }));
 
-  const cantAlum = {
-    alumnos: 140,
-  };
-
   const filteredResources = resources.filter((item) => {
     const studentsInRange =
-      cantAlum.alumnos >= item.minCapacity &&
-      cantAlum.alumnos <= item.maxCapacity;
+      cantClass >= item.minCapacity && cantClass <= item.maxCapacity;
     return studentsInRange;
   });
 
@@ -108,6 +115,14 @@ export default function Aulas() {
 
       {filteredResources.map((item, index) => (
         <TabPanel key={index} value={value} index={index}>
+          <Select_Aulas
+            namesMaterias={namesMaterias}
+            resources={resources}
+            materia={materia}
+            setMateria={setMateria}
+            cantClass={cantClass}
+            setCantClass={setCantClass}
+          />
           <Calendar
             title={item.title}
             block={item.block}

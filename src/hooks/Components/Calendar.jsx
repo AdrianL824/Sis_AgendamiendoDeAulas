@@ -6,6 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { getApi } from "../../api/api";
 import RegisterModal from "../Modal/Modal.jsx";
 import "./Calendar.css";
+import Select_Aulas from "./Select_Aulas.jsx";
 
 function Calendar({ title, block, capacity, webaddress }) {
   const [events, setEvents] = useState([]);
@@ -71,9 +72,9 @@ function Calendar({ title, block, capacity, webaddress }) {
 
   return (
     <>
-      <div className="calendarTitle">
+      {/* <div className="calendarTitle">
         <h2>{title}</h2>
-      </div>
+      </div> */}
       <FullCalendar
         timeZone="Z"
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
