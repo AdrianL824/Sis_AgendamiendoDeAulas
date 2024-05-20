@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Select_Aulas from "./Select_Aulas";
 import { center } from "@cloudinary/url-gen/qualifiers/textAlignment";
+import { useAuth0 } from '@auth0/auth0-react';
 
 function TabPanel(props) {
   const { children, value, index } = props;
@@ -48,16 +49,8 @@ export default function Aulas() {
   const [space, setSpaces] = useState([]);
   const [cantClass, setCantClass] = useState([100]);
   const [materia, setMateria] = useState("");
-  const namesMaterias = [
-    { name: "Calculo 1", cantAlum: 100 },
-    { name: "Calculo 2", cantAlum: 150 },
-    { name: "TIS", cantAlum: 30 },
-    { name: "IS", cantAlum: 50 },
-    { name: "Algebra 2", cantAlum: 160 },
-    { name: "Calculo 3", cantAlum: 180 },
-    { name: "Ecuas", cantAlum: 180 },
-    { name: "Algebra", cantAlum: 200 },
-  ];
+  const [namesMaterias, setNamesMaterias] = useState([]);
+  
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -65,6 +58,72 @@ export default function Aulas() {
   useEffect(() => {
     getSpaces();
   }, []);
+
+  const { user, isAuthenticated } = useAuth0();
+  const [userProfileImage, setUserProfileImage] = useState(null);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setUserProfileImage(user.picture);
+      const userRole = getRoleFromEmail(user.email);
+      if (userRole === 'Admin') {
+        getAdminData(user.name);
+      } else {
+        getUserData(user.name);
+      }
+    }
+  }, [isAuthenticated, user]);
+
+  const [userData, setUserData] = useState(null);
+
+  const getRoleFromEmail = (email) => {
+    if (email.includes('admin')) {
+      return 'Admin';
+    } else if (email.includes('docente')) {
+      return 'Docente';
+    } else if (email.includes('auxiliar')) {
+      return 'Auxiliar';
+    } else {
+      return 'Unknown Role';
+    }
+  };
+
+  async function getUserData(username) {
+    const url = `http://localhost:8080/api/user/singleuser/${username}`;
+    
+    try {
+      const response = await getApi(url);
+      console.log("Datos obtenidos:", response);
+      setUserData(response);
+      updateNamesMaterias(response.DAUser, false);
+    } catch (error) {
+      console.error(`Error fetching data for user ${username}:`, error);
+    }
+  }
+
+  async function getAdminData(username) {
+    const url = `http://localhost:8080/api/user/user/`;
+    
+    try {
+      const response = await getApi(url);
+      console.log("Datos obtenidos:", response);
+      setUserData(response);
+      updateNamesMaterias(response.DAUser, true);
+    } catch (error) {
+      console.error(`Error fetching data for admin ${username}:`, error);
+    }
+  }
+
+  function updateNamesMaterias(daUserData, isAdmin) {
+    const updatedNamesMaterias = daUserData.map(data => {
+      const subjectName = isAdmin ? `${data.subject} - ${data.group}` : data.subject;
+      return {
+        name: subjectName,
+        cantAlum: parseInt(data.N_students, 10),
+      };
+    });
+    setNamesMaterias(updatedNamesMaterias);
+  }
 
   async function getSpaces() {
     try {
@@ -99,7 +158,6 @@ export default function Aulas() {
         display: "flex",
         height: 624,
       }}
-      // className={"calendarContainer"}
     >
       <Tabs
         orientation="vertical"
