@@ -7,6 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import { postApi } from "../../api/api";
+import { useAuth0 } from '@auth0/auth0-react';
 
 const RegisterModal = ({ setOpen, target, getReserva }) => {
   const [startDate, setStartDate] = useState("");
@@ -27,6 +28,13 @@ const RegisterModal = ({ setOpen, target, getReserva }) => {
     day: "",
     schedule: "",
   });
+  const { user, isAuthenticated } = useAuth0();
+  const [userProfileImage, setUserProfileImage] = useState(null);
+  useEffect(() => {
+    if (isAuthenticated) {
+      setUserProfileImage(user.picture);
+    }
+  }, [isAuthenticated, user]);
 
   useEffect(() => {
     if (target) {
@@ -126,7 +134,9 @@ const RegisterModal = ({ setOpen, target, getReserva }) => {
       capacity: capacity,
       block: block,
       wbaddress: webaddress,
-      name_teacher: "Admin",
+      name_teacher: isAuthenticated && user.name || 'Admin',
+      //name_teacher: user.name,
+      //name_teacher: "Admin",
       date: new Date(date).toISOString(),
       day: dayOfWeek,
       schedule: newBlockTime,

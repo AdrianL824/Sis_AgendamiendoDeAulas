@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import { styled } from "@mui/material/styles";
@@ -12,9 +12,31 @@ import DomainIcon from "@mui/icons-material/Domain";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-
+import { useAuth0 } from '@auth0/auth0-react';
 
 const NavBar = ({ open, mode }) => {
+  const { user, isAuthenticated } = useAuth0();
+  const [role, setRole] = useState('Unknown Role');
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      const userRole = getRoleFromEmail(user.email);
+      setRole(userRole);
+    }
+  }, [isAuthenticated, user]);
+
+  const getRoleFromEmail = (email) => {
+    if (email.includes('admin')) {
+      return 'Admin';
+    } else if (email.includes('docente')) {
+      return 'Docente';
+    } else if (email.includes('auxiliar')) {
+      return 'Auxiliar';
+    } else {
+      return 'Unknown Role';
+    }
+  };
+
   const DrawerHeader = styled("div")(({ theme }) => ({
     display: "flex",
     alignItems: "center",
@@ -94,58 +116,61 @@ const NavBar = ({ open, mode }) => {
           text="Inicio"
           icon={iconsList["Inicio"]}
           onClick={handleLinkClick}
+          style={{ display: role === 'Admin' ? 'block' : 'none' }}
         />
         <Divider />
         <Divider />
         <CustomListItem
-          //to="/Admin/"
           text="Reserva"
-          icon={subMenu1Open ? <ExpandLessIcon /> : <ExpandMoreIcon />} // Cambia el icono según el estado del submenú
+          icon={subMenu1Open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           onClick={handleSubMenu1Click}
         />
         {subMenu1Open && (
           <List>
             <CustomListItem
               to="/Admin/Reserva"
-              text="AmbienteR"
+              text="Ambiente"
               icon={<LocalMallIcon />}
               onClick={handleLinkClick}
             />
           </List>
         )}
         <Divider />
-        <CustomListItem
-          //to="/Admin/"
-          text="Registro"
-          icon={subMenu2Open ? <ExpandLessIcon /> : <ExpandMoreIcon />} // Cambia el icono según el estado del submenú
-          onClick={handleSubMenu2Click}
-        />
-        {subMenu2Open && (
-          <List>
+        {role === 'Admin' && (
+          <>
             <CustomListItem
-              to="/admin/ambiente"
-              text="Ambiente"
-              icon={<DomainIcon />}
-              onClick={handleLinkClick}
+              text="Registro"
+              icon={subMenu2Open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              onClick={handleSubMenu2Click}
             />
-          </List>
-        )}
-        <Divider />
-        <CustomListItem
-          //to="/Admin/"
-          text="Periodo"
-          icon={subMenu3Open ? <ExpandLessIcon /> : <ExpandMoreIcon />} // Cambia el icono según el estado del submenú
-          onClick={handleSubMenu3Click}
-        />
-        {subMenu3Open && (
-          <List>
+            {subMenu2Open && (
+              <List>
+                <CustomListItem
+                  to="/admin/ambiente"
+                  text="Ambiente"
+                  icon={<DomainIcon />}
+                  onClick={handleLinkClick}
+                />
+              </List>
+            )}
+            <Divider />
             <CustomListItem
-              to="/Admin/Periodo"
-              text="Administrar"
-              icon={<BorderColorIcon />}
-              onClick={handleLinkClick}
+              text="Periodo"
+              icon={subMenu3Open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              onClick={handleSubMenu3Click}
             />
-          </List>
+            {subMenu3Open && (
+              <List>
+                <CustomListItem
+                  to="/Admin/Periodo"
+                  text="Administrar"
+                  icon={<BorderColorIcon />}
+                  onClick={handleLinkClick}
+                />
+              </List>
+            )}
+            <Divider />
+          </>
         )}
       </List>
     </Drawer>

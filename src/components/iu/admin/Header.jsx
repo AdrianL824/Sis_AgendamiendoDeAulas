@@ -9,11 +9,8 @@ import Switch from "@mui/material/Switch";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import * as React from "react";
-// import LocalMallIcon from '@mui/icons-material/LocalMall';
 import Box from "@mui/material/Box";
-
 import Menu from "@mui/material/Menu";
-
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -21,6 +18,8 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { LogoutButton } from "../Client/Buttonlogout";
+import { useAuth0 } from '@auth0/auth0-react';
 
 const Header = ({
   open,
@@ -32,22 +31,32 @@ const Header = ({
   const navigate = useNavigate();
   const handleLogout = () => {
     Cookies.remove("token");
-    // window.location.reload();
-    navigate("/login");
+    navigate("/");
   };
+
   const handleChange = (event) => {
     onModeChange(event.target.checked);
   };
+
   const backgroundDia = {
     background: "#FCFCFC",
     color: "black",
   };
+
   const backgroundNoche = {
     background: "#242526",
     color: "white",
   };
 
+  const { user, isAuthenticated } = useAuth0();    
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [userProfileImage, setUserProfileImage] = React.useState(null);
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      setUserProfileImage(user.picture);
+    }
+  }, [isAuthenticated, user]);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -56,6 +65,19 @@ const Header = ({
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const getRoleFromEmail = (email) => {
+    if (email.includes('admin')) {
+      return 'Admin';
+    } else if (email.includes('docente')) {
+      return 'Docente';
+    } else if (email.includes('auxiliar')) {
+      return 'Auxiliar';
+    } else {
+      return 'Unknown Role';
+    }
+  };
+
   return (
     <AppBar
       position="fixed"
@@ -103,10 +125,10 @@ const Header = ({
             src="https://www.umss.edu.bo/wp-content/uploads/2019/04/escudo-01.png"
             alt="Logo"
             style={{
-              width: open ? "0.5%" : 50, // Cambia el tamaño de la imagen aquí
+              width: open ? "0.5%" : 50,
               height: "auto",
               margin: 5,
-              opacity: open ? 0 : 1, // Cambia la opacidad de la imagen según el valor de open
+              opacity: open ? 0 : 1,
               transition: "opacity 0.3s ease-in-out",
             }}
           />
@@ -136,18 +158,21 @@ const Header = ({
                 checked={mode}
                 onChange={handleChange}
                 aria-label="login switch"
-                icon={<Brightness4Icon />} // Icono para modo noche
+                icon={<Brightness4Icon />}
                 checkedIcon={<WbSunnyIcon />}
               />
             }
             label={mode ? "Dia" : "Noche"}
           />
+          <Typography>
+            {isAuthenticated && <span>{getRoleFromEmail(user.email)} | {user.name || 'User'}</span>}
+          </Typography>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
-                  alt="Remy Sharp"
-                  src="https://www.shareicon.net/data/512x512/2016/05/24/770137_man_512x512.png"
+                  alt="User Avatar"
+                  src={userProfileImage || 'URL_DE_LA_IMAGEN_POR_DEFECTO'}
                 />
               </IconButton>
             </Tooltip>
@@ -168,7 +193,7 @@ const Header = ({
               onClose={handleCloseUserMenu}
             >
               <MenuItem key="Logout" onClick={handleLogout}>
-                <Typography textAlign="center">salir</Typography>
+                <LogoutButton />
               </MenuItem>
             </Menu>
           </Box>
@@ -177,6 +202,7 @@ const Header = ({
     </AppBar>
   );
 };
+
 Header.propTypes = {
   open: PropTypes.bool.isRequired,
   handleDrawerOpen: PropTypes.func.isRequired,
@@ -184,4 +210,5 @@ Header.propTypes = {
   mode: PropTypes.bool.isRequired,
   onModeChange: PropTypes.func.isRequired,
 };
+
 export default Header;
