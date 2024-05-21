@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Select_Aulas from "./Select_Aulas";
 import { center } from "@cloudinary/url-gen/qualifiers/textAlignment";
-import { useAuth0 } from '@auth0/auth0-react';
+import { useAuth0 } from "@auth0/auth0-react";
 
 function TabPanel(props) {
   const { children, value, index } = props;
@@ -50,7 +50,7 @@ export default function Aulas() {
   const [cantClass, setCantClass] = useState([100]);
   const [materia, setMateria] = useState("");
   const [namesMaterias, setNamesMaterias] = useState([]);
-  
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -66,7 +66,7 @@ export default function Aulas() {
     if (isAuthenticated) {
       setUserProfileImage(user.picture);
       const userRole = getRoleFromEmail(user.email);
-      if (userRole === 'Admin') {
+      if (userRole === "Admin") {
         getAdminData(user.name);
       } else {
         getUserData(user.name);
@@ -77,20 +77,20 @@ export default function Aulas() {
   const [userData, setUserData] = useState(null);
 
   const getRoleFromEmail = (email) => {
-    if (email.includes('admin')) {
-      return 'Admin';
-    } else if (email.includes('docente')) {
-      return 'Docente';
-    } else if (email.includes('auxiliar')) {
-      return 'Auxiliar';
+    if (email.includes("admin")) {
+      return "Admin";
+    } else if (email.includes("docente")) {
+      return "Docente";
+    } else if (email.includes("auxiliar")) {
+      return "Auxiliar";
     } else {
-      return 'Unknown Role';
+      return "Unknown Role";
     }
   };
 
   async function getUserData(username) {
     const url = `http://localhost:8080/api/user/singleuser/${username}`;
-    
+
     try {
       const response = await getApi(url);
       console.log("Datos obtenidos:", response);
@@ -103,7 +103,7 @@ export default function Aulas() {
 
   async function getAdminData(username) {
     const url = `http://localhost:8080/api/user/user/`;
-    
+
     try {
       const response = await getApi(url);
       console.log("Datos obtenidos:", response);
@@ -115,8 +115,10 @@ export default function Aulas() {
   }
 
   function updateNamesMaterias(daUserData, isAdmin) {
-    const updatedNamesMaterias = daUserData.map(data => {
-      const subjectName = isAdmin ? `${data.subject} - ${data.group}` : data.subject;
+    const updatedNamesMaterias = daUserData.map((data) => {
+      const subjectName = isAdmin
+        ? `${data.subject} - ${data.group}`
+        : data.subject;
       return {
         name: subjectName,
         cantAlum: parseInt(data.N_students, 10),
@@ -140,13 +142,12 @@ export default function Aulas() {
     block: space.block,
     capacity: space.capacity,
     minCapacity: space.minCapacity,
-    maxCapacity: space.maxCapacity,
     webaddress: space.webaddress,
   }));
 
   const filteredResources = resources.filter((item) => {
     const studentsInRange =
-      cantClass >= item.minCapacity && cantClass <= item.maxCapacity;
+      cantClass >= item.minCapacity && cantClass <= item.capacity;
     return studentsInRange;
   });
 

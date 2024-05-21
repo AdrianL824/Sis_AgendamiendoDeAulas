@@ -11,7 +11,6 @@ const Form_Ambiente = ({ onClose, edit, getProduct }) => {
     name: "",
     capacity: "",
     minCapacity: "",
-    maxCapacity: "",
     block: "",
     wbaddress: "",
   });
@@ -32,7 +31,6 @@ const Form_Ambiente = ({ onClose, edit, getProduct }) => {
         name: formData.name,
         capacity: formData.capacity,
         minCapacity: formData.minCapacity,
-        maxCapacity: formData.maxCapacity,
         codsis: formData.codsis,
         block: formData.block,
         webaddress: formData.wbaddress,
@@ -114,18 +112,6 @@ const Form_Ambiente = ({ onClose, edit, getProduct }) => {
               fullWidth
               name="minCapacity"
               value={formData.minCapacity}
-              onChange={handleChange}
-              margin="dense"
-            />
-          </Box>
-          <Box sx={{ mt: 0 }}>
-            <TextField
-              required
-              label="Capacidad maxima"
-              variant="outlined"
-              fullWidth
-              name="maxCapacity"
-              value={formData.maxCapacity}
               onChange={handleChange}
               margin="dense"
             />
