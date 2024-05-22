@@ -7,11 +7,15 @@ import { getApi } from "../../api/api";
 import RegisterModal from "../Modal/Modal.jsx";
 import "./Calendar.css";
 import Select_Aulas from "./Select_Aulas.jsx";
+import { useAuth0 } from "@auth0/auth0-react";
 
-function Calendar({ title, block, capacity, webaddress }) {
+function Calendar({ title, block, capacity, webaddress }) { 
   const [events, setEvents] = useState([]);
   const [open, setOpen] = useState(false);
   const [target, setTarget] = useState(null);
+
+  const [reservaInicio, setReservaInicio] = useState(null);
+  const [reservaFin, setReservaFin] = useState(null);
 
   useEffect(() => {
     getReserva();
@@ -57,7 +61,19 @@ function Calendar({ title, block, capacity, webaddress }) {
   }
 
   const handleClickOpen = (selectedInfo) => {
-    // console.log(selectedInfo);
+    const today = new Date();
+    const reservaInicioFormateado = reservaInicio.toISOString().split('T')[0].replace(/-/g, '/');
+    const reservaFinFormateado = reservaFin.toISOString().split('T')[0].replace(/-/g, '/');
+
+    if (today < reservaInicio || today > reservaFin) {
+      if (today < reservaInicio) {
+        alert(`El período de reserva es del ${reservaInicioFormateado} al ${reservaFinFormateado}`);
+      } else {
+        alert("El período de reservas ha terminado");
+      }
+      return;
+    }
+
     setOpen(true);
     setTarget({
       startDate: selectedInfo.startStr.substring(0, 10),
@@ -69,6 +85,62 @@ function Calendar({ title, block, capacity, webaddress }) {
       webaddress: webaddress,
     });
   };
+
+  const selectAllow = (selectInfo) => {
+    const startDate = new Date(reservaFin);
+    startDate.setDate(startDate.getDate() + 1);
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + 14);
+
+    const selectedStartDate = new Date(selectInfo.startStr);
+    const selectedEndDate = new Date(selectInfo.endStr);
+
+    return selectedStartDate >= startDate && selectedEndDate <= endDate;
+  };
+
+  const { user, isAuthenticated } = useAuth0();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const userRole = getRoleFromEmail(user.email);
+      if (userRole === "Docente"|| userRole === "Auxiliares")   {
+        getUserData(userRole);
+      }
+    }
+  }, [isAuthenticated, user]);
+
+  const [userData, setUserData] = useState(null);
+
+  const getRoleFromEmail = (email) => {
+    if (email.includes("admin")) {
+      return "Docente";
+    } else if (email.includes("docente")) {
+      return "Docente";
+    } else if (email.includes("auxiliar")) {
+      return "Auxiliares";
+    } else {
+      return "Unknown Role";
+    }
+  };
+
+  async function getUserData(userRole) {
+    const url = `http://localhost:8080/api/period/singleperiod/${userRole}`;
+    try {
+      const response = await getApi(url);
+      console.log("Datos obtenidos para usuario:", response);
+      
+      const { period } = response;
+      if (period && period.length > 0) {
+        const { date_i, date_f } = period[0];
+        setReservaInicio(new Date(date_i));
+        setReservaFin(new Date(date_f));
+      }
+
+      setUserData(response);
+    } catch (error) {
+      console.error(`Error fetching data for user ${userRole}:`, error);
+    }
+  }
 
   return (
     <>
@@ -103,6 +175,7 @@ function Calendar({ title, block, capacity, webaddress }) {
         selectable={true}
         selectMirror={true}
         select={handleClickOpen}
+        selectAllow={selectAllow}
       />
       {open && (
         <RegisterModal
