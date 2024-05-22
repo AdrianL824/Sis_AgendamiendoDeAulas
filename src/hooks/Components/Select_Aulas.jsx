@@ -16,7 +16,7 @@ const SelectAulas = ({ cantClass, setCantClass, namesMaterias, resources }) => {
 
   useEffect(() => {
     const filtered = resources.filter(
-      (item) => cantClass >= item.minCapacity && cantClass <= item.maxCapacity
+      (item) => cantClass >= item.minCapacity && cantClass <= item.capacity
     );
     setFilteredResources(filtered);
   }, [cantClass]);
