@@ -69,10 +69,8 @@ export default function Table_Periodo({ period }) {
               <tr>
                 <th style={{ width: 25 }}>#</th>
                 <th style={{ width: 150 }}>Nombre</th>
-                <th style={{ width: 150 }}>Fecha Periodo Inicial</th>
-                <th style={{ width: 150 }}>Fecha Periodo Final</th>
-                <th style={{ width: 150 }}>Fecha Reserva Inicial</th>
-                <th style={{ width: 150 }}>Fecha Reserva Final</th>
+                <th style={{ width: 150 }}>Fecha Inicial</th>
+                <th style={{ width: 150 }}>Fecha Final</th>
                 <th style={{ width: 150 }}>Cargo</th>
   
                 <th
@@ -86,10 +84,8 @@ export default function Table_Periodo({ period }) {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{row.name}</td>
-                  <td>{row.date_p_i}</td>
-                  <td>{row.date_p_f}</td>
-                  <td>{row.date_r_i}</td>
-                  <td>{row.date_r_f}</td>
+                  <td>{row.date_i}</td>
+                  <td>{row.date_f}</td>
                   <td>{row.role}</td>
   
                   <td style={{ alignContent: "center", alignItems: "center" }}>
