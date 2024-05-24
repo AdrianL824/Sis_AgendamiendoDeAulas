@@ -11,8 +11,10 @@ import { Box, Button } from "@mui/material";
 const Form_Rango = ({ onClose, edit, getProduct }) => {
   const [formData, setFormData] = useState({
     name: "",
-    date_i: "",
-    date_f: "",
+    date_r_i: "",
+    date_r_f: "",
+    date_e_i: "",
+    date_e_f: "",
     role: "",
   });
 
@@ -30,8 +32,10 @@ const Form_Rango = ({ onClose, edit, getProduct }) => {
     try {
       const dataToSend = {
         name: formData.name,
-        date_i: formData.date_i,
-        date_f: formData.date_f,
+        date_r_i: formData.date_r_i,
+        date_r_f: formData.date_r_f,
+        date_e_i: formData.date_e_i,
+        date_e_f: formData.date_e_f,
         role: formData.role,
       };
 
@@ -94,11 +98,11 @@ const Form_Rango = ({ onClose, edit, getProduct }) => {
           <Box sx={{ mt: 0 }}>
             <TextField
               required
-              label="Fecha inicio"
+              label="Fecha inicio Reserva"
               variant="outlined"
               fullWidth
-              name="date_i"
-              value={formData.date_i}
+              name="date_r_i"
+              value={formData.date_r_i}
               onChange={handleChange}
               margin="dense"
             />
@@ -106,11 +110,35 @@ const Form_Rango = ({ onClose, edit, getProduct }) => {
           <Box sx={{ mt: 0 }}>
             <TextField
               required
-              label="Fecha fin"
+              label="Fecha Fin Reserva"
               variant="outlined"
               fullWidth
-              name="date_f"
-              value={formData.date_f}
+              name="date_r_f"
+              value={formData.date_r_f}
+              onChange={handleChange}
+              margin="dense"
+            />
+          </Box>
+          <Box sx={{ mt: 0 }}>
+            <TextField
+              required
+              label="Fecha Inicio Examen"
+              variant="outlined"
+              fullWidth
+              name="date_e_i"
+              value={formData.date_e_i}
+              onChange={handleChange}
+              margin="dense"
+            />
+          </Box>
+          <Box sx={{ mt: 0 }}>
+            <TextField
+              required
+              label="Fecha Fin Examen"
+              variant="outlined"
+              fullWidth
+              name="date_e_f"
+              value={formData.date_e_f}
               onChange={handleChange}
               margin="dense"
             />

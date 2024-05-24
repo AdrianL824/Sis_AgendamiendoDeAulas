@@ -9,11 +9,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Drawer_User from "../Drawer/Drawer";
 import Form_Periodo from "../Forms/Form_Periodo";
+import { deleteApi } from "../../api/api";
 
-export default function Table_Periodo({ period }) {
+export default function Table_Periodo({ period, onDelete }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState(null);
-  const [periods, setPeriods] = useState(period);
+  const [data, setData] = useState(Object.values(period));
 
   const handleEditClick = (period) => {
     setSelectedPeriod(period);
@@ -23,6 +24,18 @@ export default function Table_Periodo({ period }) {
   const handleDrawerClose = () => {
     setDrawerOpen(false);
     setSelectedPeriod(null);
+  };
+
+  const handleDelete = async (index, id) => {
+    console.log(id)
+    const route = `http://localhost:8080/api/period/perioddel/${id}`; // Ajusta la ruta según corresponda
+    try {
+      await deleteApi(route);
+      setData((prevData) => prevData.filter((_, i) => i !== index));
+      onDelete(id);
+    } catch (error) {
+      console.error("Error al eliminar el producto:", error);
+    }
   };
 
   return (
@@ -83,8 +96,10 @@ export default function Table_Periodo({ period }) {
               <tr>
                 <th style={{ width: 25 }}>#</th>
                 <th style={{ width: 150 }}>Nombre</th>
-                <th style={{ width: 150 }}>Fecha Inicial</th>
-                <th style={{ width: 150 }}>Fecha Final</th>
+                <th style={{ width: 150 }}>Fecha Inicial Reserva</th>
+                <th style={{ width: 150 }}>Fecha Final Reserva</th>
+                <th style={{ width: 150 }}>Fecha Inicial Examen</th>
+                <th style={{ width: 150 }}>Fecha Final Examen</th>
                 <th style={{ width: 150 }}>Cargo</th>
                 <th style={{ width: 100, textAlign: "center" }}></th>
               </tr>
@@ -94,8 +109,10 @@ export default function Table_Periodo({ period }) {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{row.name}</td>
-                  <td>{row.date_i}</td>
-                  <td>{row.date_f}</td>
+                  <td>{row.date_r_i}</td>
+                  <td>{row.date_r_f}</td>
+                  <td>{row.date_e_i}</td>
+                  <td>{row.date_e_f}</td>
                   <td>{row.role}</td>
                   <td style={{ alignContent: "center", alignItems: "center" }}>
                     <Box
@@ -115,7 +132,12 @@ export default function Table_Periodo({ period }) {
                       >
                         <EditIcon fontSize="inherit" />
                       </Button>
-                      <Button size="sm" variant="soft" color="danger">
+                      <Button
+                        size="sm"
+                        variant="soft"
+                        color="danger"
+                        onClick={() => handleDelete(index, row._id)} // Asegúrate de que cada fila tenga un ID
+                      >
                         <DeleteIcon fontSize="inherit" />
                       </Button>
                     </Box>

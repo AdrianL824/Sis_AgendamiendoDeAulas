@@ -8,8 +8,10 @@ const Form_Periodo = ({ initialValues, onClose }) => {
   const [formData, setFormData] = useState({
     _id: "",
     name: "",
-    date_i: "",
-    date_f: "",
+    date_r_i: "",
+    date_r_f: "",
+    date_e_i: "",
+    date_e_f: "",
     role: "",
   });
 
@@ -66,11 +68,11 @@ const Form_Periodo = ({ initialValues, onClose }) => {
           <Box sx={{ mt: 0 }}>
             <TextField
               required
-              label="Fecha inicio"
+              label="Fecha Inicio Reserva"
               variant="outlined"
               fullWidth
-              name="date_i"
-              value={formData.date_i}
+              name="date_r_i"
+              value={formData.date_r_i}
               onChange={handleChange}
               margin="dense"
             />
@@ -78,11 +80,35 @@ const Form_Periodo = ({ initialValues, onClose }) => {
           <Box sx={{ mt: 0 }}>
             <TextField
               required
-              label="Fecha fin"
+              label="Fecha Fin Reserva"
               variant="outlined"
               fullWidth
-              name="date_f"
-              value={formData.date_f}
+              name="date_r_f"
+              value={formData.date_r_f}
+              onChange={handleChange}
+              margin="dense"
+            />
+          </Box>
+          <Box sx={{ mt: 0 }}>
+            <TextField
+              required
+              label="Fecha Fin Examen"
+              variant="outlined"
+              fullWidth
+              name="date_e_i"
+              value={formData.date_e_i}
+              onChange={handleChange}
+              margin="dense"
+            />
+          </Box>
+          <Box sx={{ mt: 0 }}>
+            <TextField
+              required
+              label="Fecha Fin Examen"
+              variant="outlined"
+              fullWidth
+              name="date_e_f"
+              value={formData.date_e_f}
               onChange={handleChange}
               margin="dense"
             />

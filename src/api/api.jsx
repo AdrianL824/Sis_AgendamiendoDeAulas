@@ -68,10 +68,10 @@ export const postApi = async (route, jsonData) => {
     throw error;
   }
 };
-export const deleteApi = async (productId) => {
+export const deleteApi = async ( route) => {
   try {
     const response = await axios.delete(
-      `${import.meta.env.VITE_BACKEND_PRODUCT}/product/${productId}`,
+      route,
       {
         headers: {
           "Content-Type": "application/json",

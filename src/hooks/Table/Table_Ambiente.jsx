@@ -9,10 +9,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Drawer_User from "../Drawer/Drawer";
 import Form_EditarAmbiente from "../Forms/Form_EditarAmbiente";
+import { deleteApi } from "../../api/api";
 
-export default function Table_Ambiente({ space }) {
+export default function Table_Ambiente({ space, onDelete }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedSpace, setSelectedSpace] = useState(null);
+  const [data, setData] = useState(Object.values(space));
 
   const handleEditClick = (space) => {
     setSelectedSpace(space);
@@ -22,6 +24,18 @@ export default function Table_Ambiente({ space }) {
   const handleDrawerClose = () => {
     setDrawerOpen(false);
     setSelectedSpace(null);
+  };
+
+  const handleDelete = async (index, id) => {
+    console.log(id)
+    const route = `http://localhost:8080/api/space/spacedel/${id}`; // Ajusta la ruta según corresponda
+    try {
+      await deleteApi(route);
+      setData((prevData) => prevData.filter((_, i) => i !== index));
+      onDelete(id);
+    } catch (error) {
+      console.error("Error al eliminar el producto:", error);
+    }
   };
 
   return (
@@ -116,7 +130,12 @@ export default function Table_Ambiente({ space }) {
                       >
                         <EditIcon fontSize="inherit" />
                       </Button>
-                      <Button size="sm" variant="soft" color="danger">
+                      <Button
+                        size="sm"
+                        variant="soft"
+                        color="danger"
+                        onClick={() => handleDelete(index, row._id)} // Asegúrate de que cada fila tenga un ID
+                      >
                         <DeleteIcon fontSize="inherit" />
                       </Button>
                     </Box>
