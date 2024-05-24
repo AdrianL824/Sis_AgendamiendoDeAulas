@@ -1,4 +1,4 @@
-// import * as React from "react";
+import React, { useState } from "react";
 import Box from "@mui/joy/Box";
 import PropTypes from "prop-types";
 import Table from "@mui/joy/Table";
@@ -7,20 +7,34 @@ import Sheet from "@mui/joy/Sheet";
 import Button from "@mui/joy/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import Drawer_User from "../Drawer/Drawer";
+import Form_Periodo from "../Forms/Form_Periodo";
 
 export default function Table_Periodo({ period }) {
-    return (
-      <Box sx={{ width: "100%" }}>
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState(null);
+  const [periods, setPeriods] = useState(period);
+
+  const handleEditClick = (period) => {
+    setSelectedPeriod(period);
+    setDrawerOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+    setSelectedPeriod(null);
+  };
+
+  return (
+    <Box sx={{ display: "flex", width: "100%" }}>
+      <Box sx={{ flexGrow: 1 }}>
         <Sheet
           variant="outlined"
           sx={{
             "--TableCell-height": "40px",
-            // the number is the amount of the header rows.
             "--TableHeader-height": "calc(1 * var(--TableCell-height))",
             "--Table-firstColumnWidth": "30px",
             "--Table-lastColumnWidth": "px",
-            // background needs to have transparency to show the scrolling shadows
             "--TableRow-stripeBackground": "rgba(0 0 0 / 0.04)",
             "--TableRow-hoverBackground": "rgba(0 0 0 / 0.08)",
             overflow: "auto",
@@ -72,11 +86,7 @@ export default function Table_Periodo({ period }) {
                 <th style={{ width: 150 }}>Fecha Inicial</th>
                 <th style={{ width: 150 }}>Fecha Final</th>
                 <th style={{ width: 150 }}>Cargo</th>
-  
-                <th
-                  aria-label="last"
-                  style={{ width: 100, textAlign: "center" }} // Ajusta el ancho y el alineamiento
-                ></th>
+                <th style={{ width: 100, textAlign: "center" }}></th>
               </tr>
             </thead>
             <tbody>
@@ -87,7 +97,6 @@ export default function Table_Periodo({ period }) {
                   <td>{row.date_i}</td>
                   <td>{row.date_f}</td>
                   <td>{row.role}</td>
-  
                   <td style={{ alignContent: "center", alignItems: "center" }}>
                     <Box
                       sx={{
@@ -98,15 +107,16 @@ export default function Table_Periodo({ period }) {
                         justifyContent: "center",
                       }}
                     >
-                      <Button size="sm" variant="plain" color="neutral">
-                        <EditIcon fontSize="inherit" /> {/* Ajusta el tamaño */}
+                      <Button
+                        onClick={() => handleEditClick(row)}
+                        size="sm"
+                        variant="plain"
+                        color="neutral"
+                      >
+                        <EditIcon fontSize="inherit" />
                       </Button>
                       <Button size="sm" variant="soft" color="danger">
-                        <DeleteIcon fontSize="inherit" /> {/* Ajusta el tamaño */}
-                      </Button>
-                      <Button size="sm" variant="plain" color="primary">
-                        <VisibilityIcon fontSize="inherit" />{" "}
-                        {/* Ajusta el tamaño */}
+                        <DeleteIcon fontSize="inherit" />
                       </Button>
                     </Box>
                   </td>
@@ -119,9 +129,17 @@ export default function Table_Periodo({ period }) {
           ← - →
         </Typography>
       </Box>
-    );
+      <Drawer_User
+        isOpen={drawerOpen}
+        onClose={handleDrawerClose}
+        edit={true}
+        name="Periodo"
+        form={<Form_Periodo initialValues={selectedPeriod} onClose={handleDrawerClose} />}
+      />
+    </Box>
+  );
 }
+
 Table_Periodo.propTypes = {
-    period: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  period: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
-  

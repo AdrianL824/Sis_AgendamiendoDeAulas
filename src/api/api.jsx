@@ -84,14 +84,14 @@ export const deleteApi = async (productId) => {
     throw error;
   }
 };
-export const putApi = async (route, productId, formData) => {
+export const putApi = async (route, formData) => {
   try {
     const response = await axios.put(
-      `${import.meta.env.VITE_BACKEND_PRODUCT}/${route}/${productId}`,
+      route,
       formData,
       {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       }
     );
@@ -102,3 +102,4 @@ export const putApi = async (route, productId, formData) => {
     throw error;
   }
 };
+
