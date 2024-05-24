@@ -53,6 +53,10 @@ const Page_Ambiente = () => {
     setSelectedProduct(space);
   };
 
+  const handleDelete = (id) => {
+    setSpace((prevSpace) => prevSpace.filter((space) => space._id !== id));
+  };
+
   return (
     <Admin>
       <Grid container spacing={2}>
@@ -85,6 +89,7 @@ const Page_Ambiente = () => {
                 openDrawer={openDrawer}
                 editTrue={editTrue}
                 getProduct={getProduct}
+                onDelete={handleDelete}
               />
             </Grid>
           </Grid>

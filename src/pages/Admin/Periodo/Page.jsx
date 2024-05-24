@@ -37,7 +37,9 @@ const Page_Periodo = () => {
     const handleEdit = (period) => {
         setSelectedProduct(period);
     };
-
+    const handleDelete = (id) => {
+        setPeriod((prevPeriod) => prevPeriod.filter((period) => period._id !== id));
+    };
     async function getProduct() {
         try {
           const productsData = await getApi(
@@ -81,6 +83,7 @@ const Page_Periodo = () => {
                             openDrawer={openDrawer}
                             editTrue={editTrue}
                             getProduct={getProduct}
+                            onDelete={handleDelete}
                         />
                         </Grid>
                     </Grid>
