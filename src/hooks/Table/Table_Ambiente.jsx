@@ -11,7 +11,7 @@ import Drawer_User from "../Drawer/Drawer";
 import Form_EditarAmbiente from "../Forms/Form_EditarAmbiente";
 import { deleteApi } from "../../api/api";
 
-export default function Table_Ambiente({ space, onDelete }) {
+export default function Table_Ambiente({ space, onDelete, onUpdate }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedSpace, setSelectedSpace] = useState(null);
   const [data, setData] = useState(Object.values(space));
@@ -36,6 +36,10 @@ export default function Table_Ambiente({ space, onDelete }) {
     } catch (error) {
       console.error("Error al eliminar el producto:", error);
     }
+  };
+  const handleUpdate = () => {
+    onUpdate();
+    handleDrawerClose();
   };
 
   return (
@@ -154,7 +158,13 @@ export default function Table_Ambiente({ space, onDelete }) {
         onClose={handleDrawerClose}
         edit={true}
         name="Ambiente"
-        form={<Form_EditarAmbiente initialValues={selectedSpace} onClose={handleDrawerClose} edit={true} getProduct={() => {}} />}
+        form={
+          <Form_EditarAmbiente
+            initialValues={selectedSpace}
+            onClose={handleUpdate}
+            edit={true}
+          />
+        }
       />
     </Box>
   );

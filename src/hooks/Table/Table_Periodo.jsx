@@ -11,7 +11,7 @@ import Drawer_User from "../Drawer/Drawer";
 import Form_Periodo from "../Forms/Form_Periodo";
 import { deleteApi } from "../../api/api";
 
-export default function Table_Periodo({ period, onDelete }) {
+export default function Table_Periodo({ period, onDelete, onUpdate }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState(null);
   const [data, setData] = useState(Object.values(period));
@@ -37,7 +37,10 @@ export default function Table_Periodo({ period, onDelete }) {
       console.error("Error al eliminar el producto:", error);
     }
   };
-
+  const handleUpdate = () => {
+    onUpdate();
+    handleDrawerClose();
+  };
   return (
     <Box sx={{ display: "flex", width: "100%" }}>
       <Box sx={{ flexGrow: 1 }}>
@@ -156,7 +159,8 @@ export default function Table_Periodo({ period, onDelete }) {
         onClose={handleDrawerClose}
         edit={true}
         name="Periodo"
-        form={<Form_Periodo initialValues={selectedPeriod} onClose={handleDrawerClose} />}
+        form={<Form_Periodo initialValues={selectedPeriod} onClose={handleUpdate} edit={true} />}
+        
       />
     </Box>
   );
