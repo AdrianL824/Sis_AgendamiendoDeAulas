@@ -57,6 +57,10 @@ const Page_Ambiente = () => {
     setSpace((prevSpace) => prevSpace.filter((space) => space._id !== id));
   };
 
+  const handleUpdate = async () => {
+    await getProduct();
+  };
+
   return (
     <Admin>
       <Grid container spacing={2}>
@@ -90,6 +94,7 @@ const Page_Ambiente = () => {
                 editTrue={editTrue}
                 getProduct={getProduct}
                 onDelete={handleDelete}
+                onUpdate={handleUpdate}
               />
             </Grid>
           </Grid>
