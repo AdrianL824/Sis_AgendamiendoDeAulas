@@ -34,7 +34,7 @@ const PageAnuncios = () => {
             <div class="group flex flex-col h-full bg-white border border-gray-200 shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
               <div class="h-20 flex flex-col justify-center items-center bg-rose-500 rounded-t-xl"></div>
               <div class="p-4 md:p-6">
-                <span class="block mb-1 text-xs font-semibold uppercase text-rose-600 dark:text-rose-500">
+                <span class="block mb-1  text-xs font-semibold uppercase text-rose-600 dark:text-rose-500">
                   RESERVA DE AULAS
                 </span>
                 <h3 class="text-xl font-semibold text-gray-800 dark:text-neutral-300 dark:hover:text-white">
