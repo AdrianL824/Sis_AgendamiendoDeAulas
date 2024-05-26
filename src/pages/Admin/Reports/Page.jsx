@@ -1,7 +1,7 @@
 import { Admin } from "../../../components/layout/admin/Admin";
 import { Grid, Typography } from "@mui/material";
 import { containerChartStyles } from "../Home/utils/HomeStyles";
-import { DatePickerDemo } from "./DatePickerDemo"; // Importa el componente DatePickerDemo
+import { DatePickerDemo } from "./DatePickerDemo";
 
 const Page_Reportes = () => {
   const name = "Informes por fecha - Reservas FCYT";
