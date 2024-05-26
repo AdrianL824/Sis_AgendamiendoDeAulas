@@ -16,6 +16,7 @@ import Page_Reserva from "../pages/Admin/Reserva/Page";
 import Page_Periodo from "../pages/Admin/Periodo/Page";
 import Select_Aulas from "../hooks/Components/Select_Aulas";
 import PageAnuncios from "../pages/Client/Home/PageAnuncios";
+import Page_Reportes from "../pages/Admin/Reports/Page";
 
 export const AppRouter = () => {
   const authToken = Cookies.get("token");
@@ -34,6 +35,7 @@ export const AppRouter = () => {
         <Route path="/admin/reserva" element={<Page_Reserva />} />
         <Route path="/admin/periodo" element={<Page_Periodo />} />
         <Route path="/admin/select" element={<Select_Aulas />} />
+        <Route path="/admin/reportes" element={<Page_Reportes />} />
       </Routes>
     </Router>
   );

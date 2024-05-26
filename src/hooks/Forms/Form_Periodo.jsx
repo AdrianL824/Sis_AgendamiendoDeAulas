@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { FormControl, TextField, CssBaseline, InputLabel, Select, MenuItem } from "@mui/material";
+import {
+  FormControl,
+  TextField,
+  CssBaseline,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { putApi } from "../../api/api";
 import { Box, Button } from "@mui/material";
 
@@ -46,13 +53,20 @@ const Form_Periodo = ({ initialValues, onClose }) => {
       console.error("Error sending data to API:", error);
     }
   };
-  
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <CssBaseline />
       <form onSubmit={handleSubmit}>
-        <FormControl sx={{ width: "100%", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+        <FormControl
+          sx={{
+            width: "100%",
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
           <Box sx={{ mt: 0 }}>
             <TextField
               required
@@ -92,7 +106,7 @@ const Form_Periodo = ({ initialValues, onClose }) => {
           <Box sx={{ mt: 0 }}>
             <TextField
               required
-              label="Fecha Fin Examen"
+              label="Fecha Inicio Examen"
               variant="outlined"
               fullWidth
               name="date_e_i"
@@ -133,7 +147,11 @@ const Form_Periodo = ({ initialValues, onClose }) => {
         <Box sx={{ mt: 2 }}>
           <Button
             type="submit"
-            sx={{ width: "100%", borderRadius: "55px", boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.9)" }}
+            sx={{
+              width: "100%",
+              borderRadius: "55px",
+              boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.9)",
+            }}
             variant="solid"
             color="primary"
           >
