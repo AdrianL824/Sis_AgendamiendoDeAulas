@@ -13,10 +13,23 @@ import {
 } from "@/components/ui/popover";
 
 export function DatePickerDemo({ className }) {
+  const today = new Date(); // Obtener la fecha actual
+
   const [date, setDate] = React.useState({
-    from: new Date(2024, 0, 20),
-    to: addDays(new Date(2024, 0, 20), 20),
+    from: new Date(2024, 4, 20),
+    to: addDays(new Date(2024, 4, 5), 20),
   });
+
+  const handleSelect = (newDate) => {
+    if (newDate.to > today) {
+      setDate({
+        from: today,
+        to: null,
+      });
+    } else {
+      setDate(newDate);
+    }
+  };
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -50,9 +63,10 @@ export function DatePickerDemo({ className }) {
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
+            onSelect={handleSelect}
             numberOfMonths={2}
             locale={es}
+            maxDate={today}
           />
         </PopoverContent>
       </Popover>
