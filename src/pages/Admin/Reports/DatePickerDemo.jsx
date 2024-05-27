@@ -12,22 +12,17 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function DatePickerDemo({ className }) {
+export function DatePickerDemo({ className, date, onSelect }) {
   const today = new Date(); // Obtener la fecha actual
-
-  const [date, setDate] = React.useState({
-    from: new Date(2024, 4, 20),
-    to: addDays(new Date(2024, 4, 5), 20),
-  });
 
   const handleSelect = (newDate) => {
     if (newDate.to > today) {
-      setDate({
+      onSelect({
         from: today,
         to: null,
       });
     } else {
-      setDate(newDate);
+      onSelect(newDate);
     }
   };
 

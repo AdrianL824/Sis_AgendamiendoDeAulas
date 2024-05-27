@@ -4,9 +4,64 @@ import { Grid, Typography, Box } from "@mui/material";
 import { DatePickerDemo } from "./DatePickerDemo";
 import { Button } from "@/components/ui/button";
 import jsPDF from "jspdf";
+import { addDays, format } from "date-fns";
 
 const Page_Reportes = () => {
   const name = "Informes por fecha - Reservas FCYT";
+
+  const [selectedDate, setSelectedDate] = React.useState({
+    from: new Date(2024, 4, 20),
+    to: addDays(new Date(2024, 4, 5), 20),
+  });
+
+  const handlePrintDate = () => {
+    console.log("Selected Date:", selectedDate);
+  };
+
+  const [mostReservedRoom, setMostReservedRoom] = React.useState(null);
+  const [mostReservedTeacher, setMostReservedTeacher] = React.useState(null);
+
+  const fetchMostReservedRoom = async (from, to) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/book/most-reserved-room/${from}/${to}`
+      );
+      const data = await response.json();
+      if (data.success) {
+        setMostReservedRoom(data);
+      } else {
+        setMostReservedRoom(null); // Reset in case of an unsuccessful response
+      }
+    } catch (error) {
+      console.error("Error fetching most reserved room:", error);
+      setMostReservedRoom(null);
+    }
+  };
+
+  const fetchMostReservedTeacher = async (from, to) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/book/most-reserved-teacher/${from}/${to}`
+      );
+      const data = await response.json();
+      if (data.success) {
+        setMostReservedTeacher(data);
+      } else {
+        setMostReservedTeacher(null); // Reset in case of an unsuccessful response
+      }
+    } catch (error) {
+      console.error("Error fetching most reserved teacher:", error);
+      setMostReservedTeacher(null);
+    }
+  };
+
+  const handleFetchData = () => {
+    const fromDate = format(selectedDate.from, "yyyy-MM-dd");
+    const toDate = format(selectedDate.to, "yyyy-MM-dd");
+
+    fetchMostReservedRoom(fromDate, toDate);
+    fetchMostReservedTeacher(fromDate, toDate);
+  };
 
   const exportToPDF = () => {
     const doc = new jsPDF();
@@ -60,8 +115,12 @@ const Page_Reportes = () => {
         {/* Date Picker*/}
         <Grid item xs={12}>
           <Box display="flex" justifyContent="center" alignItems="center">
-            <DatePickerDemo className="mr-4 mt-0" />
-            <Button>Buscar</Button>
+            <DatePickerDemo
+              date={selectedDate}
+              onSelect={setSelectedDate}
+              className="mr-4 mt-0"
+            />
+            <Button onClick={handleFetchData}>Buscar</Button>
           </Box>
         </Grid>
 
@@ -78,12 +137,18 @@ const Page_Reportes = () => {
             <div className="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
               <div className="flex justify-between items-center border-b rounded-t-xl py-3 px-4 md:px-5 dark:border-neutral-700">
                 <h3 className="text-lg  text-gray-400 dark:text-white">
-                  Ambiente con más reservas:
+                  Ambiente con más reservas:{" "}
+                  {mostReservedRoom ? <>{mostReservedRoom.room}</> : <></>}
                 </h3>
               </div>
               <div className="p-4 md:p-3">
                 <p className="text-lg  text-gray-400 dark:text-white ml-2">
-                  Número de reservas:
+                  Número de reservas:{" "}
+                  {mostReservedRoom ? (
+                    <>{mostReservedRoom.reservationCount}</>
+                  ) : (
+                    <></>
+                  )}
                 </p>
               </div>
             </div>
@@ -101,12 +166,22 @@ const Page_Reportes = () => {
             <div className="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
               <div className="flex justify-between items-center border-b rounded-t-xl py-3 px-4 md:px-5 dark:border-neutral-700">
                 <h3 className="text-lg  text-gray-400 dark:text-white">
-                  Docente con más reservas:
+                  Docente con más reservas:{" "}
+                  {mostReservedTeacher ? (
+                    <>{mostReservedTeacher.room}</>
+                  ) : (
+                    <></>
+                  )}
                 </h3>
               </div>
               <div className="p-4 md:p-3">
                 <p className="text-lg  text-gray-400 dark:text-white ml-2">
-                  Número de reservas:
+                  Número de reservas:{" "}
+                  {mostReservedTeacher ? (
+                    <>{mostReservedTeacher.reservationCount}</>
+                  ) : (
+                    <></>
+                  )}
                 </p>
               </div>
             </div>
