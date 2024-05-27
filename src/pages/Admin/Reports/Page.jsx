@@ -1,22 +1,37 @@
+import React from "react";
 import { Admin } from "../../../components/layout/admin/Admin";
 import { Grid, Typography, Box } from "@mui/material";
 import { DatePickerDemo } from "./DatePickerDemo";
 import { Button } from "@/components/ui/button";
-import html2pdf from "html2pdf.js";
+import jsPDF from "jspdf";
 
 const Page_Reportes = () => {
   const name = "Informes por fecha - Reservas FCYT";
 
   const exportToPDF = () => {
-    const element = document.getElementById("report-content");
+    const doc = new jsPDF();
+    const currentDate = new Date();
+    const formattedDate = `${currentDate.getDate()}-${
+      currentDate.getMonth() + 1
+    }-${currentDate.getFullYear()}`;
 
-    html2pdf(element, {
-      margin: 1,
-      filename: "reporte.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-    });
+    doc.setFontSize(20);
+    doc.text(name, 10, 20);
+
+    doc.setFontSize(18);
+    doc.text("Entre las fechas", 10, 40);
+
+    doc.setFontSize(14);
+    doc.text("Ambientes", 10, 70);
+    doc.text("Ambiente con más reservas:", 10, 80);
+    doc.text("Número de reservas:", 10, 90);
+
+    doc.setFontSize(14);
+    doc.text("Docentes", 10, 110);
+    doc.text("Docente con más reservas:", 10, 120);
+    doc.text("Número de reservas:", 10, 130);
+
+    doc.save(`reporte_${formattedDate}.pdf`);
   };
 
   return (
@@ -42,7 +57,7 @@ const Page_Reportes = () => {
           </Typography>
         </Grid>
 
-        {/* Button*/}
+        {/* Date Picker*/}
         <Grid item xs={12}>
           <Box display="flex" justifyContent="center" alignItems="center">
             <DatePickerDemo className="mr-4 mt-0" />
@@ -50,7 +65,6 @@ const Page_Reportes = () => {
           </Box>
         </Grid>
 
-        {/* Report Content */}
         <Grid id="report-content" item xs={12}>
           {/* Para los cards - Ambientes*/}
           <Typography
@@ -60,15 +74,15 @@ const Page_Reportes = () => {
             Ambientes
           </Typography>
           {/* Card */}
-          <div class="max-w-lg mx-auto">
-            <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
-              <div class="flex justify-between items-center border-b rounded-t-xl py-3 px-4 md:px-5 dark:border-neutral-700">
-                <h3 class="text-lg  text-gray-400 dark:text-white">
+          <div className="max-w-lg mx-auto">
+            <div className="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
+              <div className="flex justify-between items-center border-b rounded-t-xl py-3 px-4 md:px-5 dark:border-neutral-700">
+                <h3 className="text-lg  text-gray-400 dark:text-white">
                   Ambiente con más reservas:
                 </h3>
               </div>
-              <div class="p-4 md:p-3">
-                <p class="text-lg  text-gray-400 dark:text-white ml-2">
+              <div className="p-4 md:p-3">
+                <p className="text-lg  text-gray-400 dark:text-white ml-2">
                   Número de reservas:
                 </p>
               </div>
@@ -83,15 +97,15 @@ const Page_Reportes = () => {
             Docentes
           </Typography>
           {/* Card */}
-          <div class="max-w-lg mx-auto">
-            <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
-              <div class="flex justify-between items-center border-b rounded-t-xl py-3 px-4 md:px-5 dark:border-neutral-700">
-                <h3 class="text-lg  text-gray-400 dark:text-white">
+          <div className="max-w-lg mx-auto">
+            <div className="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
+              <div className="flex justify-between items-center border-b rounded-t-xl py-3 px-4 md:px-5 dark:border-neutral-700">
+                <h3 className="text-lg  text-gray-400 dark:text-white">
                   Docente con más reservas:
                 </h3>
               </div>
-              <div class="p-4 md:p-3">
-                <p class="text-lg  text-gray-400 dark:text-white ml-2">
+              <div className="p-4 md:p-3">
+                <p className="text-lg  text-gray-400 dark:text-white ml-2">
                   Número de reservas:
                 </p>
               </div>
