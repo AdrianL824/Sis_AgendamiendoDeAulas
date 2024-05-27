@@ -2,9 +2,22 @@ import { Admin } from "../../../components/layout/admin/Admin";
 import { Grid, Typography, Box } from "@mui/material";
 import { DatePickerDemo } from "./DatePickerDemo";
 import { Button } from "@/components/ui/button";
+import html2pdf from "html2pdf.js";
 
 const Page_Reportes = () => {
   const name = "Informes por fecha - Reservas FCYT";
+
+  const exportToPDF = () => {
+    const element = document.getElementById("report-content");
+
+    html2pdf(element, {
+      margin: 1,
+      filename: "reporte.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+    });
+  };
 
   return (
     <Admin>
@@ -37,18 +50,16 @@ const Page_Reportes = () => {
           </Box>
         </Grid>
 
-        {/* Para los cards - Ambientes*/}
-        <Grid item xs={12}>
+        {/* Report Content */}
+        <Grid id="report-content" item xs={12}>
+          {/* Para los cards - Ambientes*/}
           <Typography
             variant="h6"
             sx={{ marginTop: "2rem", marginLeft: "15rem" }}
           >
             Ambientes
           </Typography>
-        </Grid>
-
-        {/* Card */}
-        <Grid item xs={12}>
+          {/* Card */}
           <div class="max-w-lg mx-auto">
             <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
               <div class="flex justify-between items-center border-b rounded-t-xl py-3 px-4 md:px-5 dark:border-neutral-700">
@@ -63,19 +74,15 @@ const Page_Reportes = () => {
               </div>
             </div>
           </div>
-        </Grid>
-        {/* Para los cards - Docentes*/}
-        <Grid item xs={12}>
+
+          {/* Para los cards - Docentes*/}
           <Typography
             variant="h6"
             sx={{ marginTop: "3rem", marginLeft: "15rem" }}
           >
             Docentes
           </Typography>
-        </Grid>
-
-        {/* Card */}
-        <Grid item xs={12}>
+          {/* Card */}
           <div class="max-w-lg mx-auto">
             <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
               <div class="flex justify-between items-center border-b rounded-t-xl py-3 px-4 md:px-5 dark:border-neutral-700">
@@ -90,6 +97,19 @@ const Page_Reportes = () => {
               </div>
             </div>
           </div>
+
+          {/* Button exportar*/}
+          <Grid
+            item
+            xs={30}
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginRight: "15rem",
+            }}
+          >
+            <Button onClick={exportToPDF}>Exportar a PDF</Button>
+          </Grid>
         </Grid>
       </Grid>
     </Admin>
