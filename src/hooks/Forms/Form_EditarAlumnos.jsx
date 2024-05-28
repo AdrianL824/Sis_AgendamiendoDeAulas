@@ -11,17 +11,13 @@ import {
 import { putApi } from "../../api/api";
 import { Box, Button } from "@mui/material";
 
-const Form_EditarAmbiente = ({ initialValues, onClose, edit }) => {
+const Form_EditarAlumnos = ({ initialValues, onClose, edit }) => {
   const [formData, setFormData] = useState({
     _id: "",
     name: "",
-    capacity: "",
-    minCapacity: "",
-    block: "",
-    wbaddress: "",
-    date_i: "",
-    date_f: "",
     role: "",
+    subject: "",
+    N_students: "",
   });
 
   useEffect(() => {
@@ -41,7 +37,7 @@ const Form_EditarAmbiente = ({ initialValues, onClose, edit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = `http://localhost:8080/api/space/spaceupd/${formData._id}`;
+      const url = `http://localhost:8080/api/user/dauserupd/${formData._id}`;
       const response = await putApi(url, formData);
       console.log("Response from server:", response); // Log the server response
       if (response.success) {
@@ -68,7 +64,7 @@ const Form_EditarAmbiente = ({ initialValues, onClose, edit }) => {
             justifyContent: "space-between",
           }}
         >
-          <Box sx={{ mt: 0 }}>
+          {/* <Box sx={{ mt: 0 }}>
             <TextField
               required
               label="Nombre"
@@ -79,51 +75,39 @@ const Form_EditarAmbiente = ({ initialValues, onClose, edit }) => {
               onChange={handleChange}
               margin="dense"
             />
-          </Box>
-          <Box sx={{ mt: 0 }}>
+          </Box> */}
+          {/* <Box sx={{ mt: 0 }}>
             <TextField
               required
-              label="Capacidad"
+              label="Role"
               variant="outlined"
               fullWidth
-              name="capacity"
-              value={formData.capacity}
+              name="role"
+              value={formData.role}
               onChange={handleChange}
               margin="dense"
             />
-          </Box>
-          <Box sx={{ mt: 0 }}>
+          </Box> */}
+          {/* <Box sx={{ mt: 0 }}>
             <TextField
               required
-              label="Capacidad minima"
+              label="Materia"
               variant="outlined"
               fullWidth
-              name="minCapacity"
-              value={formData.minCapacity}
+              name="subject"
+              value={formData.subject}
               onChange={handleChange}
               margin="dense"
             />
-          </Box>
+          </Box> */}
           <Box sx={{ mt: 0 }}>
             <TextField
               required
-              label="Bloque de ambiente"
+              label="Cantidad de alumnos"
               variant="outlined"
               fullWidth
-              name="block"
-              value={formData.block}
-              onChange={handleChange}
-              margin="dense"
-            />
-          </Box>
-          <Box sx={{ mt: 0 }}>
-            <TextField
-              required
-              label="Direccion de ambiente(GM)"
-              variant="outlined"
-              fullWidth
-              name="wbaddress"
-              value={formData.wbaddress}
+              name="N_students"
+              value={formData.N_students}
               onChange={handleChange}
               margin="dense"
             />
@@ -140,7 +124,7 @@ const Form_EditarAmbiente = ({ initialValues, onClose, edit }) => {
             variant="solid"
             color="primary"
           >
-            {edit ? "Editar Ambiente" : "Registrar Ambiente"}
+            {edit ? "Editar Cant. Alumnos" : "Registrar Alumnos"}
           </Button>
         </Box>
       </form>
@@ -148,11 +132,11 @@ const Form_EditarAmbiente = ({ initialValues, onClose, edit }) => {
   );
 };
 
-Form_EditarAmbiente.propTypes = {
+Form_EditarAlumnos.propTypes = {
   initialValues: PropTypes.object,
   onClose: PropTypes.func.isRequired,
   edit: PropTypes.bool.isRequired,
   getProduct: PropTypes.func.isRequired,
 };
 
-export default Form_EditarAmbiente;
+export default Form_EditarAlumnos;

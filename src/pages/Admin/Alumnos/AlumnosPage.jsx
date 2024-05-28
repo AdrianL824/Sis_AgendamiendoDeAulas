@@ -2,58 +2,97 @@ import { useState, useEffect } from "react";
 import { Admin } from "../../../components/layout/admin/Admin";
 import { Grid, Typography } from "@mui/material";
 import { containerChartStyles } from "../Home/utils/HomeStyles";
-import Table_Periodo from "../../../hooks/Table/Table_Periodo";
-import ButtonProducts from "../../../hooks/utils/Button";
+// import Table_Ambiente from "../../../hooks/Table/Table_Ambiente";
+// import ButtonProducts from "../../../hooks/utils/Button";
 
 import Drawer from "../../../hooks/Drawer/Drawer";
 import { getApi } from "../../../api/api";
-import Form_Rango from "../../../hooks/Forms/Form_Rango";
-const Page_Periodo = () => {
-  const name = "Periodo Reserva";
+
+// import Form_Ambiente from "../../../hooks/Forms/Form_Ambiente";
+import Form_EditarAlumnos from "../../../hooks/Forms/Form_EditarAlumnos";
+import Table_Alumnos from "../../../hooks/Table/Table_Alumnos";
+
+const Page_Alumnos = () => {
+  const name = "Materias";
 
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [period, setPeriod] = useState({});
+  const [space, setSpace] = useState({});
   const [edit, setedit] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [userData, setUserData] = useState([]);
+
   useEffect(() => {
     getProduct();
+    getUserData();
+    getAdminData();
   }, []);
-  const [radio, setradio] = useState(false);
+  //   const [radio, setradio] = useState(false);
   const openDrawer = () => {
     setDrawerOpen(true);
   };
+
   const closeDrawer = () => {
     setDrawerOpen(false);
   };
   const editTrue = () => {
     setedit(true);
   };
-  const editFalse = () => {
-    setedit(false);
-  };
-  const handleChange = () => {
-    setradio(!radio);
-  };
-  const handleEdit = (period) => {
-    setSelectedProduct(period);
-  };
-  const handleDelete = (id) => {
-    setPeriod((prevPeriod) => prevPeriod.filter((period) => period._id !== id));
-  };
-  const handleUpdate = async () => {
-    await getProduct();
-  };
+
+  //   const editFalse = () => {
+  //     setedit(false);
+  //   };
+  //   const handleChange = () => {
+  //     setradio(!radio);
+  //   };
   async function getProduct() {
     try {
       const productsData = await getApi(
-        "http://localhost:8080/api/period/period"
+        "http://localhost:8080/api/space/spaces"
       );
-      setPeriod(productsData.period);
+      setSpace(productsData.space);
       console.log(productsData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   }
+
+  async function getUserData(username) {
+    const url = `http://localhost:8080/api/user/singleuser/${username}`;
+
+    try {
+      const response = await getApi(url);
+      console.log("Datos obtenidos:", response);
+      setUserData(response);
+      //   updateNamesMaterias(response.DAUser, false);
+    } catch (error) {
+      console.error(`Error fetching data for user ${username}:`, error);
+    }
+  }
+
+  async function getAdminData(username) {
+    const url = `http://localhost:8080/api/user/user/`;
+
+    try {
+      const response = await getApi(url);
+      console.log("Datos obtenidos:", response);
+      setUserData(response.DAUser);
+      //   updateNamesMaterias(response.DAUser, true);
+    } catch (error) {
+      console.error(`Error fetching data for admin ${username}:`, error);
+    }
+  }
+
+  const handleEdit = (space) => {
+    setSelectedProduct(space);
+  };
+
+  const handleDelete = (id) => {
+    setSpace((prevSpace) => prevSpace.filter((space) => space._id !== id));
+  };
+
+  const handleUpdate = async () => {
+    await getAdminData();
+  };
 
   return (
     <Admin>
@@ -68,20 +107,15 @@ const Page_Periodo = () => {
               >
                 {name}
               </Typography>
-              <ButtonProducts
-                handleChange={handleChange}
-                selectedProduct={selectedProduct}
-                openDrawer={openDrawer}
-                editFalse={editFalse}
-              />
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} md={12} lg={12}>
           <Grid container style={containerChartStyles}>
             <Grid item xs={12}>
-              <Table_Periodo
-                period={period}
+              <Table_Alumnos
+                userData={userData}
+                space={space}
                 handleEdit={handleEdit}
                 openDrawer={openDrawer}
                 editTrue={editTrue}
@@ -102,7 +136,7 @@ const Page_Periodo = () => {
           getProduct={getProduct}
           name={name}
           form={
-            <Form_Rango
+            <Form_EditarAlumnos
               onClose={closeDrawer}
               selectedProduct={selectedProduct}
               edit={edit}
@@ -115,4 +149,4 @@ const Page_Periodo = () => {
   );
 };
 
-export default Page_Periodo;
+export default Page_Alumnos;

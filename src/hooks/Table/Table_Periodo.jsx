@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Box from "@mui/joy/Box";
 import PropTypes from "prop-types";
 import Table from "@mui/joy/Table";
@@ -27,7 +27,7 @@ export default function Table_Periodo({ period, onDelete, onUpdate }) {
   };
 
   const handleDelete = async (index, id) => {
-    console.log(id)
+    console.log(id);
     const route = `http://localhost:8080/api/period/perioddel/${id}`; // Ajusta la ruta según corresponda
     try {
       await deleteApi(route);
@@ -159,8 +159,13 @@ export default function Table_Periodo({ period, onDelete, onUpdate }) {
         onClose={handleDrawerClose}
         edit={true}
         name="Periodo"
-        form={<Form_Periodo initialValues={selectedPeriod} onClose={handleUpdate} edit={true} />}
-        
+        form={
+          <Form_Periodo
+            initialValues={selectedPeriod}
+            onClose={handleUpdate}
+            edit={true}
+          />
+        }
       />
     </Box>
   );
@@ -168,4 +173,6 @@ export default function Table_Periodo({ period, onDelete, onUpdate }) {
 
 Table_Periodo.propTypes = {
   period: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  onUpdate: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  onDelete: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };

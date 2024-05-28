@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import Paper from "@mui/material/Paper";
@@ -104,7 +103,9 @@ export default function Table_Periodo_List({ books }) {
                       {getScheduleRange(row.schedule)}
                     </TableCell>
                     <TableCell style={{ width: columns[4].width }}>
-                      {formatDateTime(row.createdAt)}
+                      {formatDateTime(row.createdAt) +
+                        "  " +
+                        formatTime(row.createdAt)}
                     </TableCell>
                   </TableRow>
                 ))}
