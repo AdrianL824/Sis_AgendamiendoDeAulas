@@ -11,7 +11,7 @@ const Form_EditarAmbiente = ({ initialValues, onClose, edit, getProduct }) => {
     capacity: "",
     minCapacity: "",
     block: "",
-    wbaddress: "",
+    webaddress: "",
     date_i: "",
     date_f: "",
     role: "",
@@ -108,8 +108,8 @@ const Form_EditarAmbiente = ({ initialValues, onClose, edit, getProduct }) => {
               label="Direccion de ambiente(GM)"
               variant="outlined"
               fullWidth
-              name="wbaddress"
-              value={formData.wbaddress}
+              name="webaddress"
+              value={formData.webaddress}
               onChange={handleChange}
               margin="dense"
             />
