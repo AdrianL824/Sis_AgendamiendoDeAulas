@@ -15,6 +15,9 @@ import Page_Ambiente from "../pages/Admin/Ambiente/Page";
 import Page_Reserva from "../pages/Admin/Reserva/Page";
 import Page_Periodo from "../pages/Admin/Periodo/Page";
 import Select_Aulas from "../hooks/Components/Select_Aulas";
+import Page_ReservaList from "../pages/Admin/PediodoList/PeriodoList";
+import PageAnuncios from "../pages/Client/Home/PageAnuncios";
+import Page_Alumnos from "../pages/Admin/Alumnos/AlumnosPage";
 
 export const AppRouter = () => {
   const authToken = Cookies.get("token");
@@ -22,6 +25,7 @@ export const AppRouter = () => {
     <Router>
       <Routes>
         <Route path="/" element={<HomeClient />} />
+        <Route path="/anuncios" element={<PageAnuncios />} />
         <Route
           path="/login"
           element={authToken ? <Navigate to="/admin" /> : <Login />}
@@ -30,8 +34,10 @@ export const AppRouter = () => {
         <Route path="/admin" element={<HomeAdmin />} />
         <Route path="/admin/user" element={<Create_User />} />
         <Route path="/admin/reserva" element={<Page_Reserva />} />
+        <Route path="/admin/reservalist" element={<Page_ReservaList />} />
         <Route path="/admin/periodo" element={<Page_Periodo />} />
         <Route path="/admin/select" element={<Select_Aulas />} />
+        <Route path="/admin/alumnado" element={<Page_Alumnos />} />
       </Routes>
     </Router>
   );
