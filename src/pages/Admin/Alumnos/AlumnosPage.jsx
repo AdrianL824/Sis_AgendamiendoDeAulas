@@ -13,7 +13,7 @@ import Form_EditarAlumnos from "../../../hooks/Forms/Form_EditarAlumnos";
 import Table_Alumnos from "../../../hooks/Table/Table_Alumnos";
 
 const Page_Alumnos = () => {
-  const name = "Alumnos";
+  const name = "Materias";
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [space, setSpace] = useState({});

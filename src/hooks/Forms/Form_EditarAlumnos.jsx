@@ -124,7 +124,7 @@ const Form_EditarAlumnos = ({ initialValues, onClose, edit }) => {
             variant="solid"
             color="primary"
           >
-            {edit ? "Editar Alumnos" : "Registrar Alumnos"}
+            {edit ? "Editar Cant. Alumnos" : "Registrar Alumnos"}
           </Button>
         </Box>
       </form>

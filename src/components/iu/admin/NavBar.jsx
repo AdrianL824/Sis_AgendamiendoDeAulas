@@ -12,6 +12,7 @@ import DomainIcon from "@mui/icons-material/Domain";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
+import AssessmentIcon from "@mui/icons-material/Assessment";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const NavBar = ({ open, mode }) => {
@@ -58,6 +59,7 @@ const NavBar = ({ open, mode }) => {
   const [subMenu2Open, setSubMenu2Open] = useState(false);
   const [subMenu3Open, setSubMenu3Open] = useState(false);
   const [subMenu4Open, setSubMenu4Open] = useState(false);
+  const [subMenu5Open, setSubMenu5Open] = useState(false);
 
   const handleSubMenu1Click = () => {
     setSubMenu1Open(!subMenu1Open);
@@ -73,6 +75,10 @@ const NavBar = ({ open, mode }) => {
 
   const handleSubMenu4Click = () => {
     setSubMenu4Open(!subMenu4Open);
+  };
+
+  const handleSubMenu5Click = () => {
+    setSubMenu5Open(!subMenu5Open);
   };
 
   const handleLinkClick = (event) => {
@@ -184,15 +190,31 @@ const NavBar = ({ open, mode }) => {
             )}
             <Divider />
             <CustomListItem
-              text="Alumnado"
+              text="Reportes"
               icon={subMenu4Open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               onClick={handleSubMenu4Click}
             />
             {subMenu4Open && (
               <List>
                 <CustomListItem
-                  to="/Admin/Alumnado"
-                  text="Alumnos"
+                  to="/Admin/Reportes"
+                  text="Informes"
+                  icon={<AssessmentIcon />}
+                  onClick={handleLinkClick}
+                />
+              </List>
+            )}
+            <Divider />
+            <CustomListItem
+              text="Materias"
+              icon={subMenu5Open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              onClick={handleSubMenu5Click}
+            />
+            {subMenu5Open && (
+              <List>
+                <CustomListItem
+                  to="/Admin/Materias"
+                  text="Lista de Materias"
                   icon={<BorderColorIcon />}
                   onClick={handleLinkClick}
                 />

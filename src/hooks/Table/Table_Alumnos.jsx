@@ -88,7 +88,7 @@ export default function Table_Alumnos({ userData, onUpdate }) {
             <thead>
               <tr>
                 <th style={{ width: 25 }}>#</th>
-                <th style={{ width: 150 }}>Nombre</th>
+                <th style={{ width: 150 }}>Nombre de Docente</th>
                 <th style={{ width: 120 }}>Rol</th>
                 <th style={{ width: 150 }}>Materia</th>
                 <th style={{ width: 150 }}>Cant. de Alumnos</th>
@@ -144,7 +144,7 @@ export default function Table_Alumnos({ userData, onUpdate }) {
         isOpen={drawerOpen}
         onClose={handleDrawerClose}
         edit={true}
-        name="Alumnos"
+        name="Materias"
         form={
           <Form_EditarAlumnos
             initialValues={selectedPeriod}
