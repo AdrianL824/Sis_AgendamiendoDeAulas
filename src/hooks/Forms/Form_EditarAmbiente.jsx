@@ -1,22 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { FormControl, TextField, CssBaseline,InputLabel,
-    Select,
-    MenuItem, } from "@mui/material";
-
-import { postApi } from "../../api/api";
-
+import {
+  FormControl,
+  TextField,
+  CssBaseline,
+  // InputLabel,
+  // Select,
+  // MenuItem,
+} from "@mui/material";
+import { putApi } from "../../api/api";
 import { Box, Button } from "@mui/material";
 
-const Form_Rango = ({ onClose, edit, getProduct }) => {
+const Form_EditarAmbiente = ({ initialValues, onClose, edit }) => {
   const [formData, setFormData] = useState({
+    _id: "",
     name: "",
-    date_r_i: "",
-    date_r_f: "",
-    date_e_i: "",
-    date_e_f: "",
+    capacity: "",
+    minCapacity: "",
+    block: "",
+    webaddress: "",
+    date_i: "",
+    date_f: "",
     role: "",
   });
+
+  useEffect(() => {
+    if (initialValues) {
+      setFormData(initialValues);
+    }
+  }, [initialValues]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,55 +40,28 @@ const Form_Rango = ({ onClose, edit, getProduct }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const dataToSend = {
-        name: formData.name,
-        date_r_i: formData.date_r_i,
-        date_r_f: formData.date_r_f,
-        date_e_i: formData.date_e_i,
-        date_e_f: formData.date_e_f,
-        role: formData.role,
-      };
-
-      // Convert the dataToSend object to a JSON string
-      //const jsonData = JSON.stringify(dataToSend);
-
-      // Send a POST request with JSON data
-      const response = await postApi(
-        "http://localhost:8080/api/period/register",
-        dataToSend
-        //method: "POST",
-      );
-
-      // Check the response status
-      if (response.status === 200) {
-        // The request was successful
+      const url = `http://localhost:8080/api/space/spaceupd/${formData._id}`;
+      const response = await putApi(url, formData);
+      console.log("Response from server:", response); // Log the server response
+      if (response.success) {
         console.log("Datos enviados con éxito");
+        onClose();
       } else {
-        //console.error("Error en la solicitud a la API");
+        console.error("Error en la respuesta del servidor:", response.message);
       }
-      getProduct();
-      onClose();
     } catch (error) {
       console.error("Error sending data to API:", error);
     }
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        height: "80vh",
-      }}
-    >
+    <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <CssBaseline />
-
       <form onSubmit={handleSubmit}>
         <FormControl
           sx={{
-            width: 320,
+            width: "100%",
             flexGrow: 1,
             display: "flex",
             flexDirection: "column",
@@ -98,11 +83,11 @@ const Form_Rango = ({ onClose, edit, getProduct }) => {
           <Box sx={{ mt: 0 }}>
             <TextField
               required
-              label="Fecha inicio Reserva"
+              label="Capacidad"
               variant="outlined"
               fullWidth
-              name="date_r_i"
-              value={formData.date_r_i}
+              name="capacity"
+              value={formData.capacity}
               onChange={handleChange}
               margin="dense"
             />
@@ -110,11 +95,11 @@ const Form_Rango = ({ onClose, edit, getProduct }) => {
           <Box sx={{ mt: 0 }}>
             <TextField
               required
-              label="Fecha Fin Reserva"
+              label="Capacidad minima"
               variant="outlined"
               fullWidth
-              name="date_r_f"
-              value={formData.date_r_f}
+              name="minCapacity"
+              value={formData.minCapacity}
               onChange={handleChange}
               margin="dense"
             />
@@ -122,11 +107,11 @@ const Form_Rango = ({ onClose, edit, getProduct }) => {
           <Box sx={{ mt: 0 }}>
             <TextField
               required
-              label="Fecha Inicio Examen"
+              label="Bloque de ambiente"
               variant="outlined"
               fullWidth
-              name="date_e_i"
-              value={formData.date_e_i}
+              name="block"
+              value={formData.block}
               onChange={handleChange}
               margin="dense"
             />
@@ -134,38 +119,16 @@ const Form_Rango = ({ onClose, edit, getProduct }) => {
           <Box sx={{ mt: 0 }}>
             <TextField
               required
-              label="Fecha Fin Examen"
+              label="Direccion de ambiente(GM)"
               variant="outlined"
               fullWidth
-              name="date_e_f"
-              value={formData.date_e_f}
+              name="webaddress"
+              value={formData.webaddress}
               onChange={handleChange}
               margin="dense"
             />
           </Box>
-          <Box sx={{ mt: 2 }}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel htmlFor="role">Rol habilitado</InputLabel>
-              <Select
-                required
-                label="Rol habilitado"
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                inputProps={{
-                  name: "role",
-                  id: "role",
-                }}
-              >
-                <MenuItem value="Docente">Docente</MenuItem>
-                <MenuItem value="Auxiliar">Auxiliar</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-
-                   
         </FormControl>
-
         <Box sx={{ mt: 2 }}>
           <Button
             type="submit"
@@ -177,7 +140,7 @@ const Form_Rango = ({ onClose, edit, getProduct }) => {
             variant="solid"
             color="primary"
           >
-            {edit ? "Editar Carrera" : "Registrar Rango"}
+            {edit ? "Editar Ambiente" : "Registrar Ambiente"}
           </Button>
         </Box>
       </form>
@@ -185,11 +148,11 @@ const Form_Rango = ({ onClose, edit, getProduct }) => {
   );
 };
 
-export default Form_Rango;
-
-Form_Rango.propTypes = {
+Form_EditarAmbiente.propTypes = {
+  initialValues: PropTypes.object,
   onClose: PropTypes.func.isRequired,
-  selectedProduct: PropTypes.object,
   edit: PropTypes.bool.isRequired,
   getProduct: PropTypes.func.isRequired,
 };
+
+export default Form_EditarAmbiente;

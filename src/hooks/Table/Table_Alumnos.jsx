@@ -6,37 +6,26 @@ import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 import Button from "@mui/joy/Button";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+// import DeleteIcon from "@mui/icons-material/Delete";
 import Drawer_User from "../Drawer/Drawer";
-import Form_EditarAmbiente from "../Forms/Form_EditarAmbiente";
-import { deleteApi } from "../../api/api";
+import Form_EditarAlumnos from "../Forms/Form_EditarAlumnos";
 
-export default function Table_Ambiente({ space, onDelete, onUpdate }) {
+export default function Table_Alumnos({ userData, onUpdate }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedSpace, setSelectedSpace] = useState(null);
-  const [data, setData] = useState(Object.values(space));
+  const [selectedPeriod, setSelectedPeriod] = useState(null);
 
-  const handleEditClick = (space) => {
-    setSelectedSpace(space);
+  const handleEditClick = (period) => {
+    setSelectedPeriod(period);
     setDrawerOpen(true);
   };
 
+  console.log(selectedPeriod);
+
   const handleDrawerClose = () => {
     setDrawerOpen(false);
-    setSelectedSpace(null);
+    setSelectedPeriod(null);
   };
 
-  const handleDelete = async (index, id) => {
-    console.log(id);
-    const route = `http://localhost:8080/api/space/spacedel/${id}`; // Ajusta la ruta según corresponda
-    try {
-      await deleteApi(route);
-      setData((prevData) => prevData.filter((_, i) => i !== index));
-      onDelete(id);
-    } catch (error) {
-      console.error("Error al eliminar el producto:", error);
-    }
-  };
   const handleUpdate = () => {
     onUpdate();
     handleDrawerClose();
@@ -99,23 +88,21 @@ export default function Table_Ambiente({ space, onDelete, onUpdate }) {
             <thead>
               <tr>
                 <th style={{ width: 25 }}>#</th>
-                <th style={{ width: 150 }}>Nombre</th>
-                <th style={{ width: 100 }}>Capacidad</th>
-                <th style={{ width: 50 }}>Min</th>
-                <th style={{ width: 150 }}>Bloque</th>
-                <th style={{ width: 150 }}>Direccion</th>
-                <th style={{ width: 100, textAlign: "center" }}></th>
+                <th style={{ width: 150 }}>Nombre de Docente</th>
+                <th style={{ width: 120 }}>Rol</th>
+                <th style={{ width: 150 }}>Materia</th>
+                <th style={{ width: 150 }}>Cant. de Alumnos</th>
+                <th style={{ width: 40, textAlign: "center" }}></th>
               </tr>
             </thead>
             <tbody>
-              {Object.values(space).map((row, index) => (
+              {Object.values(userData).map((row, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{row.name}</td>
-                  <td>{row.capacity}</td>
-                  <td>{row.minCapacity}</td>
-                  <td>{row.block}</td>
-                  <td>{row.webaddress}</td>
+                  <td>{row.role}</td>
+                  <td>{row.subject}</td>
+                  <td>{row.N_students}</td>
                   <td style={{ alignContent: "center", alignItems: "center" }}>
                     <Box
                       sx={{
@@ -134,14 +121,14 @@ export default function Table_Ambiente({ space, onDelete, onUpdate }) {
                       >
                         <EditIcon fontSize="inherit" />
                       </Button>
-                      <Button
+                      {/* <Button
                         size="sm"
                         variant="soft"
                         color="danger"
-                        onClick={() => handleDelete(index, row._id)} // Asegúrate de que cada fila tenga un ID
+                        // onClick={() => handleDelete(index, row._id)} // Asegúrate de que cada fila tenga un ID
                       >
                         <DeleteIcon fontSize="inherit" />
-                      </Button>
+                      </Button> */}
                     </Box>
                   </td>
                 </tr>
@@ -157,10 +144,10 @@ export default function Table_Ambiente({ space, onDelete, onUpdate }) {
         isOpen={drawerOpen}
         onClose={handleDrawerClose}
         edit={true}
-        name="Ambiente"
+        name="Materias"
         form={
-          <Form_EditarAmbiente
-            initialValues={selectedSpace}
+          <Form_EditarAlumnos
+            initialValues={selectedPeriod}
             onClose={handleUpdate}
             edit={true}
           />
@@ -170,7 +157,8 @@ export default function Table_Ambiente({ space, onDelete, onUpdate }) {
   );
 }
 
-Table_Ambiente.propTypes = {
+Table_Alumnos.propTypes = {
+  userData: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   space: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   onDelete: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   onUpdate: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),

@@ -11,12 +11,13 @@ import { CustomListItem } from "./items/CustomListItem";
 import DomainIcon from "@mui/icons-material/Domain";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import BorderColorIcon from '@mui/icons-material/BorderColor';
-import { useAuth0 } from '@auth0/auth0-react';
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const NavBar = ({ open, mode }) => {
   const { user, isAuthenticated } = useAuth0();
-  const [role, setRole] = useState('Unknown Role');
+  const [role, setRole] = useState("Unknown Role");
 
   useEffect(() => {
     if (isAuthenticated && user) {
@@ -26,14 +27,14 @@ const NavBar = ({ open, mode }) => {
   }, [isAuthenticated, user]);
 
   const getRoleFromEmail = (email) => {
-    if (email.includes('admin')) {
-      return 'Admin';
-    } else if (email.includes('docente')) {
-      return 'Docente';
-    } else if (email.includes('auxiliar')) {
-      return 'Auxiliar';
+    if (email.includes("admin")) {
+      return "Admin";
+    } else if (email.includes("docente")) {
+      return "Docente";
+    } else if (email.includes("auxiliar")) {
+      return "Auxiliar";
     } else {
-      return 'Unknown Role';
+      return "Unknown Role";
     }
   };
 
@@ -57,6 +58,8 @@ const NavBar = ({ open, mode }) => {
   const [subMenu1Open, setSubMenu1Open] = useState(false);
   const [subMenu2Open, setSubMenu2Open] = useState(false);
   const [subMenu3Open, setSubMenu3Open] = useState(false);
+  const [subMenu4Open, setSubMenu4Open] = useState(false);
+  const [subMenu5Open, setSubMenu5Open] = useState(false);
 
   const handleSubMenu1Click = () => {
     setSubMenu1Open(!subMenu1Open);
@@ -68,6 +71,14 @@ const NavBar = ({ open, mode }) => {
 
   const handleSubMenu3Click = () => {
     setSubMenu3Open(!subMenu3Open);
+  };
+
+  const handleSubMenu4Click = () => {
+    setSubMenu4Open(!subMenu4Open);
+  };
+
+  const handleSubMenu5Click = () => {
+    setSubMenu5Open(!subMenu5Open);
   };
 
   const handleLinkClick = (event) => {
@@ -116,7 +127,7 @@ const NavBar = ({ open, mode }) => {
           text="Inicio"
           icon={iconsList["Inicio"]}
           onClick={handleLinkClick}
-          style={{ display: role === 'Admin' ? 'block' : 'none' }}
+          style={{ display: role === "Admin" ? "block" : "none" }}
         />
         <Divider />
         <Divider />
@@ -126,17 +137,25 @@ const NavBar = ({ open, mode }) => {
           onClick={handleSubMenu1Click}
         />
         {subMenu1Open && (
-          <List>
-            <CustomListItem
-              to="/Admin/Reserva"
-              text="Ambiente"
-              icon={<LocalMallIcon />}
-              onClick={handleLinkClick}
-            />
-          </List>
+          <>
+            <List>
+              <CustomListItem
+                to="/Admin/Reserva"
+                text="Ambiente"
+                icon={<LocalMallIcon />}
+                onClick={handleLinkClick}
+              />
+              <CustomListItem
+                to="/Admin/ReservaList"
+                text="Lista de Reservas"
+                icon={<LocalMallIcon />}
+                onClick={handleLinkClick}
+              />
+            </List>
+          </>
         )}
         <Divider />
-        {role === 'Admin' && (
+        {role === "Admin" && (
           <>
             <CustomListItem
               text="Registro"
@@ -164,6 +183,38 @@ const NavBar = ({ open, mode }) => {
                 <CustomListItem
                   to="/Admin/Periodo"
                   text="Administrar"
+                  icon={<BorderColorIcon />}
+                  onClick={handleLinkClick}
+                />
+              </List>
+            )}
+            <Divider />
+            <CustomListItem
+              text="Reportes"
+              icon={subMenu4Open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              onClick={handleSubMenu4Click}
+            />
+            {subMenu4Open && (
+              <List>
+                <CustomListItem
+                  to="/Admin/Reportes"
+                  text="Informes"
+                  icon={<AssessmentIcon />}
+                  onClick={handleLinkClick}
+                />
+              </List>
+            )}
+            <Divider />
+            <CustomListItem
+              text="Materias"
+              icon={subMenu5Open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              onClick={handleSubMenu5Click}
+            />
+            {subMenu5Open && (
+              <List>
+                <CustomListItem
+                  to="/Admin/Materias"
+                  text="Lista de Materias"
                   icon={<BorderColorIcon />}
                   onClick={handleLinkClick}
                 />

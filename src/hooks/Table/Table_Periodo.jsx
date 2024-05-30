@@ -1,4 +1,4 @@
-// import * as React from "react";
+import { useState } from "react";
 import Box from "@mui/joy/Box";
 import PropTypes from "prop-types";
 import Table from "@mui/joy/Table";
@@ -7,20 +7,50 @@ import Sheet from "@mui/joy/Sheet";
 import Button from "@mui/joy/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import Drawer_User from "../Drawer/Drawer";
+import Form_Periodo from "../Forms/Form_Periodo";
+import { deleteApi } from "../../api/api";
 
-export default function Table_Periodo({ period }) {
-    return (
-      <Box sx={{ width: "100%" }}>
+export default function Table_Periodo({ period, onDelete, onUpdate }) {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState(null);
+  const [data, setData] = useState(Object.values(period));
+
+  const handleEditClick = (period) => {
+    setSelectedPeriod(period);
+    setDrawerOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+    setSelectedPeriod(null);
+  };
+
+  const handleDelete = async (index, id) => {
+    console.log(id);
+    const route = `http://localhost:8080/api/period/perioddel/${id}`; // Ajusta la ruta según corresponda
+    try {
+      await deleteApi(route);
+      setData((prevData) => prevData.filter((_, i) => i !== index));
+      onDelete(id);
+    } catch (error) {
+      console.error("Error al eliminar el producto:", error);
+    }
+  };
+  const handleUpdate = () => {
+    onUpdate();
+    handleDrawerClose();
+  };
+  return (
+    <Box sx={{ display: "flex", width: "100%" }}>
+      <Box sx={{ flexGrow: 1 }}>
         <Sheet
           variant="outlined"
           sx={{
             "--TableCell-height": "40px",
-            // the number is the amount of the header rows.
             "--TableHeader-height": "calc(1 * var(--TableCell-height))",
             "--Table-firstColumnWidth": "30px",
             "--Table-lastColumnWidth": "px",
-            // background needs to have transparency to show the scrolling shadows
             "--TableRow-stripeBackground": "rgba(0 0 0 / 0.04)",
             "--TableRow-hoverBackground": "rgba(0 0 0 / 0.08)",
             overflow: "auto",
@@ -69,14 +99,12 @@ export default function Table_Periodo({ period }) {
               <tr>
                 <th style={{ width: 25 }}>#</th>
                 <th style={{ width: 150 }}>Nombre</th>
-                <th style={{ width: 150 }}>Fecha Inicial</th>
-                <th style={{ width: 150 }}>Fecha Final</th>
+                <th style={{ width: 150 }}>Fecha Inicial Reserva</th>
+                <th style={{ width: 150 }}>Fecha Final Reserva</th>
+                <th style={{ width: 150 }}>Fecha Inicial Examen</th>
+                <th style={{ width: 150 }}>Fecha Final Examen</th>
                 <th style={{ width: 150 }}>Cargo</th>
-  
-                <th
-                  aria-label="last"
-                  style={{ width: 100, textAlign: "center" }} // Ajusta el ancho y el alineamiento
-                ></th>
+                <th style={{ width: 100, textAlign: "center" }}></th>
               </tr>
             </thead>
             <tbody>
@@ -84,10 +112,11 @@ export default function Table_Periodo({ period }) {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{row.name}</td>
-                  <td>{row.date_i}</td>
-                  <td>{row.date_f}</td>
+                  <td>{row.date_r_i}</td>
+                  <td>{row.date_r_f}</td>
+                  <td>{row.date_e_i}</td>
+                  <td>{row.date_e_f}</td>
                   <td>{row.role}</td>
-  
                   <td style={{ alignContent: "center", alignItems: "center" }}>
                     <Box
                       sx={{
@@ -98,15 +127,21 @@ export default function Table_Periodo({ period }) {
                         justifyContent: "center",
                       }}
                     >
-                      <Button size="sm" variant="plain" color="neutral">
-                        <EditIcon fontSize="inherit" /> {/* Ajusta el tamaño */}
+                      <Button
+                        onClick={() => handleEditClick(row)}
+                        size="sm"
+                        variant="plain"
+                        color="neutral"
+                      >
+                        <EditIcon fontSize="inherit" />
                       </Button>
-                      <Button size="sm" variant="soft" color="danger">
-                        <DeleteIcon fontSize="inherit" /> {/* Ajusta el tamaño */}
-                      </Button>
-                      <Button size="sm" variant="plain" color="primary">
-                        <VisibilityIcon fontSize="inherit" />{" "}
-                        {/* Ajusta el tamaño */}
+                      <Button
+                        size="sm"
+                        variant="soft"
+                        color="danger"
+                        onClick={() => handleDelete(index, row._id)} // Asegúrate de que cada fila tenga un ID
+                      >
+                        <DeleteIcon fontSize="inherit" />
                       </Button>
                     </Box>
                   </td>
@@ -119,9 +154,25 @@ export default function Table_Periodo({ period }) {
           ← - →
         </Typography>
       </Box>
-    );
+      <Drawer_User
+        isOpen={drawerOpen}
+        onClose={handleDrawerClose}
+        edit={true}
+        name="Periodo"
+        form={
+          <Form_Periodo
+            initialValues={selectedPeriod}
+            onClose={handleUpdate}
+            edit={true}
+          />
+        }
+      />
+    </Box>
+  );
 }
+
 Table_Periodo.propTypes = {
-    period: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  period: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  onUpdate: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  onDelete: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
-  

@@ -16,6 +16,7 @@ function Calendar({ title, block, capacity, webaddress }) {
 
   const [reservaInicio, setReservaInicio] = useState(null);
   const [reservaFin, setReservaFin] = useState(null);
+  const [inputDate, setInputDate] = useState("");
 
   useEffect(() => {
     getReserva();
@@ -61,7 +62,7 @@ function Calendar({ title, block, capacity, webaddress }) {
   }
 
   const handleClickOpen = (selectedInfo) => {
-    const today = new Date();
+    let today = inputDate ? new Date(inputDate) : new Date();
     const reservaInicioFormateado = reservaInicio.toISOString().split('T')[0].replace(/-/g, '/');
     const reservaFinFormateado = reservaFin.toISOString().split('T')[0].replace(/-/g, '/');
 
@@ -131,9 +132,9 @@ function Calendar({ title, block, capacity, webaddress }) {
       
       const { period } = response;
       if (period && period.length > 0) {
-        const { date_i, date_f } = period[0];
-        setReservaInicio(new Date(date_i));
-        setReservaFin(new Date(date_f));
+        const { date_r_i, date_r_f } = period[0];
+        setReservaInicio(new Date(date_r_i));
+        setReservaFin(new Date(date_r_f));
       }
 
       setUserData(response);
@@ -144,6 +145,12 @@ function Calendar({ title, block, capacity, webaddress }) {
 
   return (
     <>
+      <input
+        type="date"
+        value={inputDate}
+        onChange={(e) => setInputDate(e.target.value)}
+        placeholder="YYYY-MM-DD"
+      />
       <FullCalendar
         timeZone="Z"
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
