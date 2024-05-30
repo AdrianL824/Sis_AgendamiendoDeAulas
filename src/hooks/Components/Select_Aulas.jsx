@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
-const SelectAulas = ({ cantClass, setCantClass, namesMaterias, resources }) => {
-  const [materia, setMateria] = useState("");
+const SelectAulas = ({ cantClass, setCantClass, namesMaterias, resources, inputDate, setInputDate, materia, setMateria }) => {
   const [filteredResources, setFilteredResources] = useState([]);
 
   const handleChange = (event) => {
@@ -19,7 +18,7 @@ const SelectAulas = ({ cantClass, setCantClass, namesMaterias, resources }) => {
       (item) => cantClass >= item.minCapacity && cantClass <= item.capacity
     );
     setFilteredResources(filtered);
-  }, [cantClass]);
+  }, [cantClass, resources]);
 
   return (
     <FormControl sx={{ m: 1, minWidth: 120, mt: "25px" }} size="small">
@@ -32,16 +31,19 @@ const SelectAulas = ({ cantClass, setCantClass, namesMaterias, resources }) => {
         onChange={handleChange}
       >
         {namesMaterias.map((item, index) => (
-          <MenuItem key={index} value={item.name} index={index}>
+          <MenuItem key={index} value={item.name}>
             {item.name}
           </MenuItem>
         ))}
       </Select>
-      {/* {filteredResources.map((item, index) => (
-        <h1 key={index}>{item.name}</h1>
-      ))} */}
+      <input
+        type="date"
+        value={inputDate}
+        onChange={(e) => setInputDate(e.target.value)}
+        placeholder="YYYY-MM-DD"
+      />
     </FormControl>
   );
 };
-
+   
 export default SelectAulas;
