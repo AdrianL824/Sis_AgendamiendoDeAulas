@@ -6,17 +6,15 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { getApi } from "../../api/api";
 import RegisterModal from "../Modal/Modal.jsx";
 import "./Calendar.css";
-import Select_Aulas from "./Select_Aulas.jsx";
 import { useAuth0 } from "@auth0/auth0-react";
 
-function Calendar({ title, block, capacity, webaddress }) { 
+function Calendar({ title, block, capacity, webaddress, inputDate, setInputDate }) { 
   const [events, setEvents] = useState([]);
   const [open, setOpen] = useState(false);
   const [target, setTarget] = useState(null);
 
   const [reservaInicio, setReservaInicio] = useState(null);
   const [reservaFin, setReservaFin] = useState(null);
-  const [inputDate, setInputDate] = useState("");
 
   useEffect(() => {
     getReserva();
@@ -145,12 +143,12 @@ function Calendar({ title, block, capacity, webaddress }) {
 
   return (
     <>
-      <input
+      {/* <input
         type="date"
         value={inputDate}
         onChange={(e) => setInputDate(e.target.value)}
         placeholder="YYYY-MM-DD"
-      />
+      /> */}
       <FullCalendar
         timeZone="Z"
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}

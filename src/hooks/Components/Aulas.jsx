@@ -7,8 +7,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Select_Aulas from "./Select_Aulas";
-import { center } from "@cloudinary/url-gen/qualifiers/textAlignment";
+import SelectAulas from "./Select_Aulas";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function TabPanel(props) {
@@ -45,11 +44,12 @@ function a11yProps(index) {
 }
 
 export default function Aulas() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const [space, setSpaces] = useState([]);
-  const [cantClass, setCantClass] = useState([100]);
+  const [cantClass, setCantClass] = useState(100);
   const [materia, setMateria] = useState("");
   const [namesMaterias, setNamesMaterias] = useState([]);
+  const [inputDate, setInputDate] = useState("");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -58,6 +58,15 @@ export default function Aulas() {
   useEffect(() => {
     getSpaces();
   }, []);
+
+  useEffect(() => {
+    if (namesMaterias.length > 0) {
+      const firstMateria = namesMaterias[0].name;
+      const firstCantAlum = namesMaterias[0].cantAlum;
+      setMateria(firstMateria);
+      setCantClass(firstCantAlum);
+    }
+  }, [namesMaterias]);
 
   const { user, isAuthenticated } = useAuth0();
   const [userProfileImage, setUserProfileImage] = useState(null);
@@ -185,13 +194,15 @@ export default function Aulas() {
               display: "flex",
             }}
           >
-            <Select_Aulas
+            <SelectAulas
               namesMaterias={namesMaterias}
               resources={resources}
               materia={materia}
               setMateria={setMateria}
               cantClass={cantClass}
               setCantClass={setCantClass}
+              inputDate={inputDate}
+              setInputDate={setInputDate}
             />
             <h2 style={{ paddingLeft: "25%" }}>{item.title}</h2>
           </div>
@@ -201,6 +212,8 @@ export default function Aulas() {
             capacity={item.capacity}
             webaddress={item.webaddress}
             value={value}
+            inputDate={inputDate}
+            setInputDate={setInputDate}
           />
         </TabPanel>
       ))}
