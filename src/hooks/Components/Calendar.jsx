@@ -17,8 +17,10 @@ function Calendar({ title, block, capacity, webaddress, inputDate, setInputDate 
   const [reservaFin, setReservaFin] = useState(null);
 
   useEffect(() => {
-    getReserva();
-  }, []);
+    if (title) {
+      getReserva();
+    }
+  }, [title]);
 
   async function getReserva() {
     try {
@@ -143,12 +145,6 @@ function Calendar({ title, block, capacity, webaddress, inputDate, setInputDate 
 
   return (
     <>
-      {/* <input
-        type="date"
-        value={inputDate}
-        onChange={(e) => setInputDate(e.target.value)}
-        placeholder="YYYY-MM-DD"
-      /> */}
       <FullCalendar
         timeZone="Z"
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
