@@ -1,24 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
-const SelectAulas = ({ cantClass, setCantClass, namesMaterias, resources, inputDate, setInputDate, materia, setMateria }) => {
-  const [filteredResources, setFilteredResources] = useState([]);
-
+const SelectAulas = ({ namesMaterias, materia, setMateria, inputDate, setInputDate }) => {
   const handleChange = (event) => {
     const selectedMateria = event.target.value;
     setMateria(selectedMateria);
-    const selectedMateriaInfo = namesMaterias.find(
-      (item) => item.name === selectedMateria
-    );
-    setCantClass(selectedMateriaInfo ? selectedMateriaInfo.cantAlum : 0);
   };
-
-  useEffect(() => {
-    const filtered = resources.filter(
-      (item) => cantClass >= item.minCapacity && cantClass <= item.capacity
-    );
-    setFilteredResources(filtered);
-  }, [cantClass, resources]);
 
   return (
     <FormControl sx={{ m: 1, minWidth: 120, mt: "25px" }} size="small">
@@ -32,7 +19,8 @@ const SelectAulas = ({ cantClass, setCantClass, namesMaterias, resources, inputD
       >
         {namesMaterias.map((item, index) => (
           <MenuItem key={index} value={item.name}>
-            {item.name}
+            {item.name
+}
           </MenuItem>
         ))}
       </Select>
@@ -45,5 +33,5 @@ const SelectAulas = ({ cantClass, setCantClass, namesMaterias, resources, inputD
     </FormControl>
   );
 };
-   
+
 export default SelectAulas;

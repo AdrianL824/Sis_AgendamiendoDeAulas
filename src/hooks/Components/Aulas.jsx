@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import SelectAulas from "./Select_Aulas";
 import { useAuth0 } from "@auth0/auth0-react";
+import TextField from "@mui/material/TextField";
 
 function TabPanel(props) {
   const { children, value, index } = props;
@@ -46,13 +47,17 @@ function a11yProps(index) {
 export default function Aulas() {
   const [value, setValue] = useState(0);
   const [space, setSpaces] = useState([]);
-  const [cantClass, setCantClass] = useState(100);
   const [materia, setMateria] = useState("");
   const [namesMaterias, setNamesMaterias] = useState([]);
   const [inputDate, setInputDate] = useState("");
+  const [filteredResources, setFilteredResources] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    if (filteredResources.length > 0) {
+      getReservations(filteredResources[newValue].id);
+    }
   };
 
   useEffect(() => {
@@ -62,11 +67,14 @@ export default function Aulas() {
   useEffect(() => {
     if (namesMaterias.length > 0) {
       const firstMateria = namesMaterias[0].name;
-      const firstCantAlum = namesMaterias[0].cantAlum;
       setMateria(firstMateria);
-      setCantClass(firstCantAlum);
+      filterResources(firstMateria);
     }
   }, [namesMaterias]);
+
+  useEffect(() => {
+    filterResources(materia);
+  }, [materia, space]);
 
   const { user, isAuthenticated } = useAuth0();
   const [userProfileImage, setUserProfileImage] = useState(null);
@@ -145,6 +153,15 @@ export default function Aulas() {
     }
   }
 
+  async function getReservations(spaceId) {
+    try {
+      const response = await getApi(`http://localhost:8080/api/reservation/${spaceId}`);
+      // Procesa las reservas según sea necesario
+    } catch (error) {
+      console.error("Error fetching reservations:", error);
+    }
+  }
+
   const resources = space.map((space) => ({
     id: space.name,
     title: space.slug,
@@ -154,11 +171,27 @@ export default function Aulas() {
     webaddress: space.webaddress,
   }));
 
-  const filteredResources = resources.filter((item) => {
-    const studentsInRange =
-      cantClass >= item.minCapacity && cantClass <= item.capacity;
-    return studentsInRange;
-  });
+  const handleInputChange = (event) => {
+    const newValue = event.target.value;
+    setSearchValue(newValue);
+    filterResources(materia, newValue); // Actualizar el filtrado incluyendo el valor de búsqueda
+  };
+
+  const handleMateriaChange = (selectedMateria) => {
+    setMateria(selectedMateria);
+  };
+
+  const filterResources = (selectedMateria, searchText = searchValue) => {
+    const materiaInfo = namesMaterias.find((mat) => mat.name === selectedMateria);
+    if (materiaInfo) {
+      const cantClass = materiaInfo.cantAlum;
+      const filtered = resources.filter((item) => {
+        const studentsInRange = cantClass >= item.minCapacity && cantClass <= item.capacity;
+        return studentsInRange && item.title.toLowerCase().includes(searchText.toLowerCase());
+      });
+      setFilteredResources(filtered);
+    }
+  };
 
   return (
     <Box
@@ -169,23 +202,38 @@ export default function Aulas() {
         height: 624,
       }}
     >
-      <Tabs
-        orientation="vertical"
-        variant="scrollable"
-        value={value}
-        onChange={handleChange}
-        aria-label="Vertical tabs example"
+      <Box
         sx={{
+          width: "18%",
+          paddingRight: "10px",
           borderRight: 1,
           borderColor: "divider",
-          paddingTop: "0px",
-          width: "18%",
         }}
       >
-        {filteredResources.map((item, index) => (
-          <Tab label={`${item.title}`} key={index} {...a11yProps(index)} />
-        ))}
-      </Tabs>
+        <TextField
+          label="Buscar Aula"
+          variant="outlined"
+          value={searchValue}
+          onChange={handleInputChange}
+          style={{ marginBottom: "10px" }}
+        />
+        <Tabs
+          orientation="vertical"
+          variant="scrollable"
+          value={value}
+          onChange={handleChange}
+          aria-label="Vertical tabs example"
+          sx={{
+            borderRight: 1,
+            borderColor: "divider",
+            paddingTop: "0px",
+          }}
+        >
+          {filteredResources.map((item, index) => (
+            <Tab label={`${item.title}`} key={index} {...a11yProps(index)} />
+          ))}
+        </Tabs>
+      </Box>
 
       {filteredResources.map((item, index) => (
         <TabPanel key={index} value={value} index={index}>
@@ -196,11 +244,8 @@ export default function Aulas() {
           >
             <SelectAulas
               namesMaterias={namesMaterias}
-              resources={resources}
               materia={materia}
-              setMateria={setMateria}
-              cantClass={cantClass}
-              setCantClass={setCantClass}
+              setMateria={handleMateriaChange}
               inputDate={inputDate}
               setInputDate={setInputDate}
             />
@@ -211,7 +256,6 @@ export default function Aulas() {
             block={item.block}
             capacity={item.capacity}
             webaddress={item.webaddress}
-            value={value}
             inputDate={inputDate}
             setInputDate={setInputDate}
           />
