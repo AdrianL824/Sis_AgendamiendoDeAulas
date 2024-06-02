@@ -14,10 +14,6 @@ const Page_Reportes = () => {
     to: addDays(new Date(2024, 4, 5), 20),
   });
 
-  const handlePrintDate = () => {
-    console.log("Selected Date:", selectedDate);
-  };
-
   const [mostReservedRoom, setMostReservedRoom] = React.useState(null);
   const [mostReservedTeacher, setMostReservedTeacher] = React.useState(null);
 
@@ -75,16 +71,43 @@ const Page_Reportes = () => {
 
     doc.setFontSize(18);
     doc.text("Entre las fechas", 10, 40);
+    doc.text(`Desde: ${format(selectedDate.from, "dd-MM-yyyy")}`, 10, 50);
+    doc.text(`Hasta: ${format(selectedDate.to, "dd-MM-yyyy")}`, 10, 60);
 
     doc.setFontSize(14);
     doc.text("Ambientes", 10, 70);
-    doc.text("Ambiente con más reservas:", 10, 80);
-    doc.text("Número de reservas:", 10, 90);
+    doc.text(
+      `Ambiente con más reservas: ${
+        mostReservedRoom ? mostReservedRoom.room : "No disponible"
+      }`,
+      10,
+      80
+    );
+    doc.text(
+      `Número de reservas: ${
+        mostReservedRoom ? mostReservedRoom.reservationCount : "No disponible"
+      }`,
+      10,
+      90
+    );
 
-    doc.setFontSize(14);
     doc.text("Docentes", 10, 110);
-    doc.text("Docente con más reservas:", 10, 120);
-    doc.text("Número de reservas:", 10, 130);
+    doc.text(
+      `Docente con más reservas: ${
+        mostReservedTeacher ? mostReservedTeacher.teacher : "No disponible"
+      }`,
+      10,
+      120
+    );
+    doc.text(
+      `Número de reservas: ${
+        mostReservedTeacher
+          ? mostReservedTeacher.reservationCount
+          : "No disponible"
+      }`,
+      10,
+      130
+    );
 
     doc.save(`reporte_${formattedDate}.pdf`);
   };
@@ -168,7 +191,7 @@ const Page_Reportes = () => {
                 <h3 className="text-lg  text-gray-400 dark:text-white">
                   Docente con más reservas:{" "}
                   {mostReservedTeacher ? (
-                    <>{mostReservedTeacher.room}</>
+                    <>{mostReservedTeacher.teacher}</>
                   ) : (
                     <></>
                   )}

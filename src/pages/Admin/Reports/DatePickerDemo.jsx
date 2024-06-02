@@ -1,5 +1,5 @@
 import * as React from "react";
-import { addDays, format } from "date-fns";
+import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { es } from "date-fns/locale";
 
@@ -16,7 +16,7 @@ export function DatePickerDemo({ className, date, onSelect }) {
   const today = new Date(); // Obtener la fecha actual
 
   const handleSelect = (newDate) => {
-    if (newDate.to > today) {
+    if (newDate?.to > today) {
       onSelect({
         from: today,
         to: null,
