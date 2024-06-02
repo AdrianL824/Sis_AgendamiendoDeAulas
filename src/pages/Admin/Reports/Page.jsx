@@ -91,14 +91,14 @@ const Page_Reportes = () => {
       `Ambiente con más reservas: ${
         mostReservedRoom ? mostReservedRoom.room : "No disponible"
       }`,
-      70,
+      53,
       113
     );
     doc.text(
       `Número de reservas: ${
         mostReservedRoom ? mostReservedRoom.reservationCount : "No disponible"
       }`,
-      70,
+      53,
       118
     );
 
@@ -107,7 +107,7 @@ const Page_Reportes = () => {
       `Docente con más reservas: ${
         mostReservedTeacher ? mostReservedTeacher.room : "No disponible"
       }`,
-      69,
+      53,
       148
     );
     doc.text(
@@ -116,7 +116,7 @@ const Page_Reportes = () => {
           ? mostReservedTeacher.reservationCount
           : "No disponible"
       }`,
-      69,
+      53,
       153
     );
 
@@ -181,16 +181,24 @@ const Page_Reportes = () => {
           <div className="max-w-lg mx-auto">
             <div className="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
               <div className="flex justify-between items-center border-b rounded-t-xl py-3 px-4 md:px-5 dark:border-neutral-700">
-                <h3 className="text-lg  text-gray-400 dark:text-white">
+                <h3 className="text-lg text-gray-400 dark:text-white">
                   Ambiente con más reservas:{" "}
-                  {mostReservedRoom ? <>{mostReservedRoom.room}</> : <></>}
+                  {mostReservedRoom ? (
+                    <span style={{ fontWeight: "bold", color: "black" }}>
+                      {mostReservedRoom.room}
+                    </span>
+                  ) : (
+                    <></>
+                  )}
                 </h3>
               </div>
               <div className="p-4 md:p-3">
-                <p className="text-lg  text-gray-400 dark:text-white ml-2">
+                <p className="text-lg text-gray-400 dark:text-white ml-2">
                   Número de reservas:{" "}
                   {mostReservedRoom ? (
-                    <>{mostReservedRoom.reservationCount}</>
+                    <span style={{ fontWeight: "bold", color: "black" }}>
+                      {mostReservedRoom.reservationCount}
+                    </span>
                   ) : (
                     <></>
                   )}
@@ -210,20 +218,24 @@ const Page_Reportes = () => {
           <div className="max-w-lg mx-auto">
             <div className="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
               <div className="flex justify-between items-center border-b rounded-t-xl py-3 px-4 md:px-5 dark:border-neutral-700">
-                <h3 className="text-lg  text-gray-400 dark:text-white">
+                <h3 className="text-lg text-gray-400 dark:text-white">
                   Docente con más reservas:{" "}
                   {mostReservedTeacher ? (
-                    <>{mostReservedTeacher.room}</>
+                    <span style={{ fontWeight: "bold", color: "black" }}>
+                      {mostReservedTeacher.room}
+                    </span>
                   ) : (
                     <></>
                   )}
                 </h3>
               </div>
               <div className="p-4 md:p-3">
-                <p className="text-lg  text-gray-400 dark:text-white ml-2">
+                <p className="text-lg text-gray-400 dark:text-white ml-2">
                   Número de reservas:{" "}
                   {mostReservedTeacher ? (
-                    <>{mostReservedTeacher.reservationCount}</>
+                    <span style={{ fontWeight: "bold", color: "black" }}>
+                      {mostReservedTeacher.reservationCount}
+                    </span>
                   ) : (
                     <></>
                   )}
