@@ -94,7 +94,7 @@ const Page_Reportes = () => {
     doc.text("Docentes", 10, 110);
     doc.text(
       `Docente con más reservas: ${
-        mostReservedTeacher ? mostReservedTeacher.teacher : "No disponible"
+        mostReservedTeacher ? mostReservedTeacher.room : "No disponible"
       }`,
       10,
       120
@@ -191,7 +191,7 @@ const Page_Reportes = () => {
                 <h3 className="text-lg  text-gray-400 dark:text-white">
                   Docente con más reservas:{" "}
                   {mostReservedTeacher ? (
-                    <>{mostReservedTeacher.teacher}</>
+                    <>{mostReservedTeacher.room}</>
                   ) : (
                     <></>
                   )}
