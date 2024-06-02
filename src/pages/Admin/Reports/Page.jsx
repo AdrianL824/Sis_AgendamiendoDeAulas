@@ -7,7 +7,7 @@ import jsPDF from "jspdf";
 import { addDays, format } from "date-fns";
 
 const Page_Reportes = () => {
-  const name = "Informes por fecha - Reservas FCYT";
+  const name = "Reporte de ambientes y docentes - FCYT";
 
   const [selectedDate, setSelectedDate] = React.useState({
     from: new Date(2024, 4, 20),
@@ -59,45 +59,56 @@ const Page_Reportes = () => {
     fetchMostReservedTeacher(fromDate, toDate);
   };
 
+  //aqui para modificar el formato del pdf :)
   const exportToPDF = () => {
-    const doc = new jsPDF();
-    const currentDate = new Date();
-    const formattedDate = `${currentDate.getDate()}-${
-      currentDate.getMonth() + 1
-    }-${currentDate.getFullYear()}`;
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: [215.9, 279.4],
+    });
 
-    doc.setFontSize(20);
-    doc.text(name, 10, 20);
+    doc.setFont("courier", "bold");
+    doc.setFontSize(15);
+    doc.setTextColor(34, 49, 63);
+    doc.text(name, 105, 25, { align: "center" });
 
-    doc.setFontSize(18);
-    doc.text("Entre las fechas", 10, 40);
-    doc.text(`Desde: ${format(selectedDate.from, "dd-MM-yyyy")}`, 10, 50);
-    doc.text(`Hasta: ${format(selectedDate.to, "dd-MM-yyyy")}`, 10, 60);
+    doc.setLineWidth(0.1);
+    doc.line(10, 32, 207, 32);
 
-    doc.setFontSize(14);
-    doc.text("Ambientes", 10, 70);
+    doc.setLineWidth(0.1);
+    doc.line(10, 255, 207, 255);
+
+    doc.setFontSize(12);
+    doc.setTextColor(55, 71, 79);
+    doc.text("Entre las fechas:", 25, 55);
+    doc.text(`Desde: ${format(selectedDate.from, "dd-MM-yyyy")}`, 87, 65);
+    doc.text(`Hasta: ${format(selectedDate.to, "dd-MM-yyyy")}`, 87, 73);
+
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Ambientes", 40, 100);
     doc.text(
       `Ambiente con más reservas: ${
         mostReservedRoom ? mostReservedRoom.room : "No disponible"
       }`,
-      10,
-      80
+      70,
+      113
     );
     doc.text(
       `Número de reservas: ${
         mostReservedRoom ? mostReservedRoom.reservationCount : "No disponible"
       }`,
-      10,
-      90
+      70,
+      118
     );
 
-    doc.text("Docentes", 10, 110);
+    doc.text("Docentes", 40, 135);
     doc.text(
       `Docente con más reservas: ${
         mostReservedTeacher ? mostReservedTeacher.room : "No disponible"
       }`,
-      10,
-      120
+      69,
+      148
     );
     doc.text(
       `Número de reservas: ${
@@ -105,9 +116,20 @@ const Page_Reportes = () => {
           ? mostReservedTeacher.reservationCount
           : "No disponible"
       }`,
-      10,
-      130
+      69,
+      153
     );
+
+    const currentDate = new Date();
+    const formattedDate = `${currentDate.getDate()}-${
+      currentDate.getMonth() + 1
+    }-${currentDate.getFullYear()}`;
+    const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
+    const generatedText = `Generado el ${formattedDate} a las ${formattedTime}`;
+    const pageNumber = doc.internal.getNumberOfPages();
+    doc.setFontSize(9);
+    doc.text(generatedText, 140, 265);
+    doc.text(`Página ${pageNumber}`, 105, 287);
 
     doc.save(`reporte_${formattedDate}.pdf`);
   };
