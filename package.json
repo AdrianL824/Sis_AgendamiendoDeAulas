@@ -41,6 +41,8 @@
     "html2pdf.js": "^0.10.1",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2",
     "localforage": "^1.10.0",
     "lucide-react": "^0.379.0",
     "match-sorter": "^6.3.1",
